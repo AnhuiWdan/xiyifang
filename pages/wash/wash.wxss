@@ -1,0 +1,30 @@
+/* pages/wash/wash.wxss */
+.container view{
+  width: 670rpx;
+  height: 80rpx;
+}
+picker{
+  width: 670rpx;
+  height: 80rpx;
+  margin-bottom: 30rpx;
+}
+.picker{
+  height: 80rpx;
+  line-height: 80rpx;
+  color: #777;
+}
+.picker,input{
+  width: 100%;
+  padding: 0 10rpx 0 30rpx;
+  border: none;
+  border-bottom: 1rpx solid #ddd;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.pay{
+  width: 100%;
+  color: #fff;
+  background-color: #1890ff;
+}

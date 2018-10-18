@@ -1,0 +1,31 @@
+/*pages/login/login.wxss */
+input{
+  margin: 20rpx auto;
+  padding-left: 10px;
+  border: none;
+  border-bottom: 1rpx solid #ddd;
+  /* background-color: #fff */
+}
+.box3{
+  display: -webkit-flex;
+  display: flex;
+  align-items: center;
+}
+.verify{
+  width: 400rpx;
+}
+.canvas{
+  width: 250rpx; 
+  height: 100%;
+}
+canvas {
+    width: 200rpx;
+    height: 92rpx;
+    border-radius: 14px;
+    margin-left: 10rpx;
+    float: right;
+}
+button.login{
+  color: #fff;
+  background-color: #1890ff;
+}

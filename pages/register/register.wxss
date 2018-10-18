@@ -1,0 +1,33 @@
+/* pages/register/register.wxss */
+input{
+  margin: 20rpx auto;
+  border:none;
+  border-bottom: 1rpx solid #999;
+  /* background-color: #fff */
+}
+.box3{
+  display: -webkit-flex;
+  display: flex;
+  align-items: center;
+  justify-content: space-between
+}
+.verify{
+  width: 400rpx;
+}
+.sendMsg{
+  width: 250rpx;
+  height: 100%;
+  text-align: center;
+}
+.sendMsg button{
+  float: right;
+  width: 200rpx;
+  color: #fff;
+  background-color: #1890ff;
+}
+button.register{
+  color: #fff;
+  background-color: #1890ff;
+}
+
+

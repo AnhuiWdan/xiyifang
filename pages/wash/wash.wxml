@@ -1,0 +1,16 @@
+<!--pages/wash/wash.wxml-->
+<view class='container'>
+  <picker  range='{{arr1}}' range-key='dd1' bindchange='picker1Change'>
+    <view class='picker'>
+      {{prompt1}}
+    </view>
+  </picker>
+   <picker  range='{{arr2}}' range-key='dd2' bindchange='picker2Change'>
+    <view class='picker'>
+      {{prompt2}}
+    </view>
+  </picker>
+  <input type='text' placeholder='件数' />
+  <input type='text' disabled='false' placeholder='价格' value='{{price}}'/>
+  <button class='pay'>支付</button>
+</view>

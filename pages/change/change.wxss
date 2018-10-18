@@ -1,0 +1,9 @@
+/* pages/change/change.wxss */
+form{
+  width: 670rpx
+}
+form button{
+  margin-top: 50rpx;
+  color: #fff;
+  background-color: #1890ff;
+}

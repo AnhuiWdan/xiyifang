@@ -1,0 +1,235 @@
+<!--pages/order/order.wxml-->
+<view class='container'>
+  <view class='list'>
+    <view class='top'>
+      <cover-view>
+        <cover-image src='http://stdl.qq.com/stdl/newtabcms/icon/0001_100.png'></cover-image>
+      </cover-view>
+      <text>订单号</text>
+      <text class='orderNum'>1234567890123</text>
+      <text class='fr state'>未支付</text>
+    </view>
+    <view class='middle'>
+      <view>
+        <text>学生：</text>
+        <text class='blue'>18812345678</text>
+      </view>
+      <view>
+        <text>工人：</text>
+        <text>南丽湾中心花园右侧蜂巢智能柜</text>
+      </view>
+      <view>
+        <text>下单时间：</text>
+        <text>2018-10-16 11:30</text>
+      </view>
+    </view>
+    <view class='bottom'>
+        <text class='fl'>支付</text>
+        <text class='fr blue'>修改</text>
+    </view>
+  </view>  
+  <view class='list'>
+    <view class='top'>
+      <cover-view>
+        <cover-image src='http://stdl.qq.com/stdl/newtabcms/icon/0001_100.png'></cover-image>
+      </cover-view>
+      <text>订单号</text>
+      <text class='orderNum'>1234567890123</text>
+      <text class='fr state'>已支付</text>
+    </view>
+    <view class='middle'>
+      <view>
+        <text>学生：</text>
+        <text class='blue'>18812345678</text>
+      </view>
+      <view>
+        <text>工人：</text>
+        <text>南丽湾中心花园右侧蜂巢智能柜</text>
+      </view>
+      <view>
+        <text>下单时间：</text>
+        <text>2018-10-16 11:30</text>
+      </view>
+    </view>
+    <view class='bottom'>
+        <text class='fl'>详情</text>
+        <text class='fl'>退款</text>
+        <text class='fr blue'>修改</text>
+    </view>
+  </view>  
+  <view class='list'>
+    <view class='top'>
+      <cover-view>
+        <cover-image src='http://stdl.qq.com/stdl/newtabcms/icon/0001_100.png'></cover-image>
+      </cover-view>
+      <text>订单号</text>
+      <text class='orderNum'>1234567890123</text>
+      <text class='fr state'>已寄</text>
+    </view>
+    <view class='middle'>
+      <view>
+        <text>收派员：</text>
+        <text class='blue'>18812345678</text>
+      </view>
+      <view class='clearfix'>
+        <text class='fl'>柜机：</text>
+        <text class='fl add'>南丽湾中心花园右侧蜂巢智能柜南丽湾中心花园右侧蜂巢智能柜</text>
+      </view>
+      <view>
+        <text>入柜时间：</text>
+        <text>2018-10-16 11:30</text>
+      </view>
+    </view>
+    <view class='bottom'>
+      <text class='fl'>详情</text>
+      <text class='fr blue'>退款</text>
+    </view>
+  </view>
+
+  <view class='list'>
+    <view class='top'>
+      <cover-view>
+        <cover-image src='http://stdl.qq.com/stdl/newtabcms/icon/0001_100.png'></cover-image>
+      </cover-view>
+      <text>订单号</text>
+      <text class='orderNum'>1234567890123</text>
+      <text class='fr state'>已取</text>
+    </view>
+    <view class='middle'>
+      <view>
+        <text>收派员：</text>
+        <text class='blue'>18812345678</text>
+      </view>
+      <view class='clearfix'>
+        <text class='fl'>柜机：</text>
+        <text class='fl add'>南丽湾中心花园右侧蜂巢智能柜南丽湾中心花园右侧蜂巢智能柜</text>
+      </view>
+      <view>
+        <text>入柜时间：</text>
+        <text>2018-10-16 11:30</text>
+      </view>
+    </view>
+    <view class='bottom'>
+      <text class='fl'>详情</text>
+      <text class='fr blue'>物流</text>
+    </view>
+  </view>
+
+  <view class='list'>
+    <view class='top'>
+      <cover-view>
+        <cover-image src='http://stdl.qq.com/stdl/newtabcms/icon/0001_100.png'></cover-image>
+      </cover-view>
+      <text>订单号</text>
+      <text class='orderNum'>1234567890123</text>
+      <text class='fr state'>派送成功</text>
+    </view>
+    <view class='middle'>
+      <view>
+        <text>收派员：</text>
+        <text class='blue'>18812345678</text>
+      </view>
+      <view class='clearfix'>
+        <text class='fl'>柜机：</text>
+        <text class='fl add'>南丽湾中心花园右侧蜂巢智能柜南丽湾中心花园右侧蜂巢智能柜</text>
+      </view>
+      <view>
+        <text>入柜时间：</text>
+        <text>2018-10-16 11:30</text>
+      </view>
+    </view>
+    <view class='bottom'>
+      <text class='fl'>详情</text>
+      <text class='fl'>物流</text>
+      <text class='fr blue'>扫一扫</text>
+    </view>
+  </view>
+
+  <view class='list'>
+    <view class='top'>
+      <cover-view>
+        <cover-image src='http://stdl.qq.com/stdl/newtabcms/icon/0001_100.png'></cover-image>
+      </cover-view>
+      <text>订单号</text>
+      <text class='orderNum'>1234567890123</text>
+      <text class='fr state'>已签收</text>
+    </view>
+    <view class='middle'>
+      <view>
+        <text>收派员：</text>
+        <text class='blue'>18812345678</text>
+      </view>
+      <view class='clearfix'>
+        <text class='fl'>柜机：</text>
+        <text class='fl add'>南丽湾中心花园右侧蜂巢智能柜南丽湾中心花园右侧蜂巢智能柜</text>
+      </view>
+      <view>
+        <text>入柜时间：</text>
+        <text>2018-10-16 11:30</text>
+      </view>
+    </view>
+    <view class='bottom'>
+      <text class='fl'>详情</text>
+      <text class='fr blue'>物流</text>
+    </view>
+  </view>
+
+  <view class='list'>
+    <view class='top'>
+      <cover-view>
+        <cover-image src='http://stdl.qq.com/stdl/newtabcms/icon/0001_100.png'></cover-image>
+      </cover-view>
+      <text>订单号</text>
+      <text class='orderNum'>1234567890123</text>
+      <text class='fr state'>工人拒收</text>
+    </view>
+    <view class='middle'>
+      <view>
+        <text>收派员：</text>
+        <text class='blue'>18812345678</text>
+      </view>
+      <view class='clearfix'>
+        <text class='fl'>柜机：</text>
+        <text class='fl add'>南丽湾中心花园右侧蜂巢智能柜南丽湾中心花园右侧蜂巢智能柜</text>
+      </view>
+      <view>
+        <text>入柜时间：</text>
+        <text>2018-10-16 11:30</text>
+      </view>
+    </view>
+    <view class='bottom'>
+      <text class='fl'>详情</text>
+      <text class='fl'>物流</text>
+      <text class='fr blue'>扫一扫</text>
+    </view>
+  </view>
+
+  <view class='list'>
+    <view class='top'>
+      <cover-view>
+        <cover-image src='http://stdl.qq.com/stdl/newtabcms/icon/0001_100.png'></cover-image>
+      </cover-view>
+      <text>订单号</text>
+      <text class='orderNum'>1234567890123</text>
+      <text class='fr state'>退款</text>
+    </view>
+    <view class='middle'>
+      <view>
+        <text>收派员：</text>
+        <text class='blue'>18812345678</text>
+      </view>
+      <view class='clearfix'>
+        <text class='fl'>柜机：</text>
+        <text class='fl add'>南丽湾中心花园右侧蜂巢智能柜南丽湾中心花园右侧蜂巢智能柜</text>
+      </view>
+      <view>
+        <text>入柜时间：</text>
+        <text>2018-10-16 11:30</text>
+      </view>
+    </view>
+    <view class='bottom'>
+      <text class='fl blue'>详情</text>
+    </view>
+  </view>
+  <view class='more'>查看更多订单</view>
+</view>
