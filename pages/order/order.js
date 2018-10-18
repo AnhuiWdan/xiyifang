@@ -6,7 +6,7 @@ Page({
     arr:[
       {
         num:'xxxxx',
-        state:'已完成',
+        state:'',
         time:'2018-10-11',
         operation:'扫一扫'
       },
