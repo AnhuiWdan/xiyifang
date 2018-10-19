@@ -6,8 +6,10 @@ Page({
   data: {
     mobile:'',
     psd:'',
-    verifyCode:''
-   
+    verifyCode:'',
+    disabled:false,
+    currentTime:61
+    
   },
 
   /*** 生命周期函数--监听页面加载*/
@@ -42,6 +44,34 @@ Page({
     wx.navigateTo({
       url: '../login/login',
     })
+  },
+  //点击发送验证码
+  getCode:function(){
+    console.log(this.data.mobile);
+    if(this.data.mobile == ''){
+      wx.showModal({
+        title: '手机号不能为空！',
+        showCancel: false
+      })
+      return false
+    } else if (!/^1[34578]\d{9}$/.test(this.data.mobile)){
+      wx.showModal({
+        title: '手机号格式有误！',
+        showCancel: false
+      })
+      return false
+    }else{
+      console.log(this.data.mobile);
+      wx.request({
+        url: 'https://xwxapi.itknow.cn/api/AccountManage/SendAuthCode',
+        data:{
+          UserName:this.data.mobile
+        },
+        header:{
+          Authorization:'VXsCkNFfes/vUAX9VR7o846FRxnTp1wWe83OUuIH24RGTl6z8cjjjKfojynRyMuFlCaplDRqAIXScS2u9WNMXQ=='
+        }
+      })
+    }
   },
   registerClick:function(){
     //注册

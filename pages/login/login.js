@@ -14,6 +14,7 @@ Page({
   onLoad: function () {
     var that = this;
     drawPic(that);
+   
   },
   change: function () {
     var that = this;

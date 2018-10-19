@@ -10,7 +10,7 @@
       <view class='box3'>
         <input class='verify' type='text' placeholder='请输入验证码' maxlength="4" bindinput='importVerify'/>
         <view class='sendMsg clearfix'>
-           <button>发送</button>
+           <button disabled="{{disabled}}" bindtap='getCode'>发送</button>
         </view>
       </view>
       <view>
