@@ -1,0 +1,8 @@
+<view class='container'>
+  <form>
+    <input type='text' password='true' bindinput='inputOld' placeholder='请输入手机号码' />
+    <input type='text' password='true' bindinput='inputNew1' placeholder='请输入新密码' />
+    <input type='text' password='true' bindinput='inputNew2' placeholder= />
+    <button bindtap='change'>修改</button>
+  </form>
+</view>

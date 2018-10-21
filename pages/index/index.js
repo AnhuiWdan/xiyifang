@@ -3,7 +3,10 @@ Page({
 
   /*** 页面的初始数据*/
   data: {
-  
+    isLogin: false
+  },
+  onLoad() {
+    // 逻辑判断是否已经登录
   },
   scan() {
     wx.scanCode({

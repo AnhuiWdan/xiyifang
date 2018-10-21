@@ -81,3 +81,18 @@ page{
   color: #fff;
   background-color: #1890ff;
 }
+
+.toLogin{
+  font-size: 60rpx;
+}
+
+.toLogin .arrow {
+  height: 60rpx;
+  width: 60rpx;
+  vertical-align: top;
+  margin-top: 14rpx;
+}
+
+.toLogin .arrow::after {
+  display: none;
+}

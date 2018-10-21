@@ -1,5 +1,6 @@
 <!--pages/login/login.wxml-->
 <view class="container">
+    <image class="logo" src="../../images/logo.png" mode="aspectFit|aspectFill|widthFix" lazy-load="false" binderror="" bindload=""></image>
     <form>
      <view>
        <input type='number' placeholder="请输入手机号" maxlength="11" bindinput='inputMobile' />
@@ -14,9 +15,15 @@
         </view>
       </view>
       <view>
-        <button class='login' bindtap='loginClick'>登录</button>
-        <button class='register' bindtap='registerClick'>注册</button>
+        
+        <button class='login' wx:if="{{!(!!mobile && !!psd && !!verifyCode)}}" bindtap='loginClick'>登录</button>
+        <button class='login active' wx:else bindtap='loginClick'>登录</button>
+        <view class="" hover-class="none" hover-stop-propagation="false">
+          <view class="forget" bindtap="toForget">
+            忘记密码
+          </view>
+          <view class="registerText">  还没有账号？<a class='text' bindtap='registerClick'>注册</a></view>
+        </view>
       </view>
     </form>
 </view>
-

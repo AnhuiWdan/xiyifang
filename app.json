@@ -1,18 +1,19 @@
 {
   "pages": [
-    "pages/login/login",
-    "pages/index/index",
     "pages/change/change",
-    "pages/register/register",
-    "pages/mine/mine",
     "pages/order/order",
     "pages/wash/wash",
+    "pages/login/login",
+    "pages/forget/forget",
+    "pages/index/index",
+    "pages/register/register",
+    "pages/mine/mine",
     "pages/logs/logs"
   ],
   "window": {
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#000000",
-    "navigationBarTitleText": "WeChat",
-    "navigationBarTextStyle": "white"
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "洗衣坊",
+    "navigationBarTextStyle": "black"
   }
 }

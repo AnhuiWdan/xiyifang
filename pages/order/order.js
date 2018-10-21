@@ -1,4 +1,11 @@
 // pages/order/order.js
+const header = require('../../utils/header');
+const {URL} = require('../../utils/http');
+const DATA = {
+  page: 1,
+  rows: 10,
+  Status: -1
+}
 Page({
 
   /*** 页面的初始数据*/
@@ -27,7 +34,19 @@ Page({
 
   /*** 生命周期函数--监听页面加载*/
   onLoad: function (options) {
-
+    wx.request({
+      url: `${URL}order/GetOrderList`,
+      data: DATA,
+      header: header,
+      method: 'POST',
+      dataType: 'json',
+      responseType: 'text',
+      success: (result)=>{
+        console.log(result);
+      },
+      fail: ()=>{},
+      complete: ()=>{}
+    });
   },
 
 })

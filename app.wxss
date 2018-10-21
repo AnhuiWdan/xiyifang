@@ -1,6 +1,6 @@
 /**app.wxss**/
 page {
-  background-color: #fff; 
+  background-color: #f5f8fa; 
   font-size: 30rpx;
   box-sizing: border-box;
   padding: 0 40rpx;
@@ -53,3 +53,20 @@ button{
 }
 
 
+.logo{
+  width: 232rpx;
+  height: 232rpx;
+  margin-bottom: 80rpx;
+}
+
+.active{
+  background-color: #1890ff!important;
+}
+
+.registerText{
+  float: right;
+  color: #333;
+}
+.registerText .text{
+  color: #ff5a00;
+}

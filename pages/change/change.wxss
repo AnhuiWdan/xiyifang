@@ -5,5 +5,10 @@ form{
 form button{
   margin-top: 50rpx;
   color: #fff;
-  background-color: #1890ff;
+  background-color: #abd8f8;
+}
+
+.container input {
+  border: none;
+  border-bottom: 1px solid #ddd;
 }

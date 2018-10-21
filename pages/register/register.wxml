@@ -1,5 +1,6 @@
 <!--pages/register/register.wxml-->
 <view class="container">
+    <image class="logo" src="../../images/logo.png" mode="aspectFit|aspectFill|widthFix" lazy-load="false"></image>
     <form>
      <view>
        <input type='number' placeholder="请输入手机号" maxlength="11" bindinput='inputMobile' />
@@ -10,12 +11,13 @@
       <view class='box3'>
         <input class='verify' type='text' placeholder='请输入验证码' maxlength="4" bindinput='importVerify'/>
         <view class='sendMsg clearfix'>
-           <button>发送</button>
+           <button>获取验证码</button>
         </view>
       </view>
       <view>
-        <button class='register' bindtap='registerClick'>注册</button>  
-        <button class='login' bindtap='loginClick'>登录</button>     
+        <button class='register' wx:if="{{!(!!mobile && !!psd && !!verifyCode)}}" bindtap='loginClick'>注册</button>
+        <button class='register active' wx:else bindtap='registerClick'>注册</button>
+        <p class="registerText"> 已有账号？<a class='text' bindtap='loginClick'>登录</a></p> 
       </view>
     </form>
 </view>

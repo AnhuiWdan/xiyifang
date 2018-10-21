@@ -25,7 +25,12 @@ canvas {
     margin-left: 10rpx;
     float: right;
 }
-button.login{
+.login {
   color: #fff;
-  background-color: #1890ff;
+  background-color: #abd8f8;
 }
+.forget{
+  display: inline-block;
+  color: #999;
+}
+.registerText{display: inline-block;}

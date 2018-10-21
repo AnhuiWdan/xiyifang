@@ -6,7 +6,7 @@ Page({
   data: {
     mobile:'',
     psd:'',
-    verifyCode:'2',
+    verifyCode:'',
     text:'',
     //这里text是本地制作的验证码，后期换上接口的
   },
@@ -87,6 +87,11 @@ Page({
   registerClick:function(){
     wx.navigateTo({
       url: '../register/register',
+    })
+  },
+  toForget: function() {
+    wx.navigateTo({
+      url: '../forget/forget'
     })
   }
 
