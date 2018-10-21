@@ -8,7 +8,8 @@ Page({
     psd:'',
     verifyCode:'',
     disabled:false,
-    currentTime:61
+    sendTime:'发送',
+    currentTime:60
     
   },
 
@@ -47,33 +48,62 @@ Page({
   },
   //点击发送验证码
   getCode:function(){
-    console.log(this.data.mobile);
-    if(this.data.mobile == ''){
+    var interval = null ;
+    var that = this;
+    console.log(that.data.mobile);
+    if (that.data.mobile == ''){
       wx.showModal({
         title: '手机号不能为空！',
         showCancel: false
       })
       return false
-    } else if (!/^1[34578]\d{9}$/.test(this.data.mobile)){
+    } else if (!/^1[34578]\d{9}$/.test(that.data.mobile)){
       wx.showModal({
-        title: '手机号格式有误！',
+        title: '手机号有误！',
         showCancel: false
       })
       return false
     }else{
-      console.log(this.data.mobile);
+      console.log(that.data.mobile);
       wx.request({
         url: 'https://xwxapi.itknow.cn/api/AccountManage/SendAuthCode',
         data:{
-          UserName:this.data.mobile
+          UserName: that.data.mobile
         },
         header:{
-          Authorization:'VXsCkNFfes/vUAX9VR7o846FRxnTp1wWe83OUuIH24RGTl6z8cjjjKfojynRyMuFlCaplDRqAIXScS2u9WNMXQ=='
+          Authorization:'VXsCkNFfes/vUAX9VR7o846FRxnTp1wWe83OUuIH24RGTl6z8cjjjKfojynRyMuFlCaplDRqAIXScS2u9WNMXQ==',
+          'content-type':'application/json'
+        },
+        method:'post',
+        success:function(res){
+          console.log(res.data);
+          if(res.data.Code == '200'){
+            var currentTime = that.data.currentTime
+            interval = setInterval(function () {
+              currentTime--;
+              that.setData({
+                sendTime: currentTime + '秒',
+                disabled:true
+              })
+              if (currentTime <= 0) {
+                clearInterval(interval)
+                that.setData({
+                  sendTime: '重新发送',
+                  currentTime: 60,
+                  disabled: false
+                })
+              }
+            }, 1000)
+          }
+        },
+        fail:function(res){
+          console.log(res.data)
         }
       })
     }
   },
   registerClick:function(){
+  
     //注册
     var mobile = this.data.mobile;
     var psd = this.data.psd;
@@ -85,28 +115,64 @@ Page({
         showCancel: false
       })
       return false
-    } else if (mobile.length != 11) {
-      wx.showModal({
-        title: '手机号长度有误！',
-        showCancel: false
-      })
-      return false
-    } else if (!mobileReg.test(mobile)) {
+    }else if (!mobileReg.test(mobile)) {
       wx.showModal({
         title: '手机号有误！',
         showCancel: false
       })
       return false
-    } else if (verifyCode == '') {
-      //判断密码没写，这里是直接判断验证码，验证码是否正确也需要后期调接口判断
+    } else if (psd.length<6 || psd.length>32){
+      //判断密码长度
+      wx.showModal({
+        title: '密码长度有误！',
+        showCancel: false
+      })
+      return false
+    }else if (verifyCode == '') {
+      //判断验证码
       wx.showModal({
         title: '验证码不能为空！',
         showCancel: false
       })
       return false
+    }else if(verifyCode.length != 6){
+      wx.showModal({
+        title: '验证码长度有误！',
+        showCancel: false
+      })
+      return false
     }else {
-      wx.navigateTo({
-        url: '../index/index',
+      console.log('111');
+      
+      wx.request({
+        url: 'https://xwxapi.itknow.cn/api/AccountManage/UserLogin',
+        data:{
+          UserName:mobile,
+          Password:psd,
+          AuthCode: verifyCode
+        },
+        header: {
+          Authorization: 'VXsCkNFfes/vUAX9VR7o846FRxnTp1wWe83OUuIH24RGTl6z8cjjjKfojynRyMuFlCaplDRqAIXScS2u9WNMXQ==',
+          'content-type': 'application/json'
+        },
+        method:'post',
+        success:function(res){
+          console.log(res.data);
+          if(res.data.Code == 200){
+            wx.showToast({
+              title: '注册成功',
+              icon:'success',
+              duration:1500,
+              mask:true
+            })
+            setTimeout(function(){
+              wx.navigateTo({
+                url: '../login/login',
+              })
+            },1500)
+            
+          }
+        }
       })
     }
   }
