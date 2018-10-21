@@ -8,12 +8,21 @@ Page({
     psd:'',
     verifyCode:'',
     text:'',
+    code: ''
     //这里text是本地制作的验证码，后期换上接口的
   },
   //事件处理函数
   onLoad: function () {
     var that = this;
+    wx.login({
+      success:function(res){
+        that.setData({
+          code: res.code
+        })
+      }
+    })
     drawPic(that);
+     
   },
   change: function () {
     var that = this;
@@ -52,20 +61,21 @@ Page({
         showCancel:false
       })
       return false
-    }else if(mobile.length != 11){
-      wx.showModal({
-        title: '手机号长度有误！',
-        showCancel: false
-      })
-      return false
-    } else if (!mobileReg.test(mobile)) {
+    }else if (!mobileReg.test(mobile)) {
       wx.showModal({
         title: '手机号有误！',
         showCancel: false
       })
       return false
-    } else if (verifyCode == ''){
-      //判断密码没写，这里是直接判断验证码
+    } else if (psd.length < 6 || psd.length > 32){
+      //先判断密码长度
+      wx.showModal({
+        title: '密码有误！',
+        showCancel: false
+      })
+      return false
+    }else if (verifyCode == ''){
+      //接判断验证码
       wx.showModal({
         title: '验证码不能为空！',
         showCancel: false
@@ -78,8 +88,35 @@ Page({
       })
       return false
     }else {
-      wx.navigateTo({
-        url: '../index/index',
+      const that = this;
+      wx.request({
+        url: 'https://xwxapi.itknow.cn/api/AccountManage/UserLogin',
+        data:{
+          UserName:mobile,
+          Password:psd,
+          OpenId:this.data.code
+        },
+        header: {
+          'content-type': 'application/json'
+        },
+        method: 'post',
+        success:function(res){
+          if(res.data.Code == 200){
+            var app = getApp();
+            app.globalData.Authorization = res.data.Data;
+            app.globalData.phoneNum = that.data.mobile;
+            wx.navigateTo({
+              url: '../index/index',
+            })
+          }else{
+            wx.showModal({
+              title: res.data.Message,
+              showCancel: false
+            })
+            return false
+          }
+        }
+
       })
     }
 

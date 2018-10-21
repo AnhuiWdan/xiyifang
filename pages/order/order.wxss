@@ -14,7 +14,12 @@ page{
   border: 1rpx solid #d5d5d5;
   margin-top: 20rpx;
 }
-
+.smallLogo{
+  vertical-align: top;
+  margin: 10rpx;
+  height: 60rpx;
+  width: 60rpx;
+}
 .list .top{
   height: 80rpx;
   line-height: 80rpx;

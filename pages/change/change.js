@@ -1,5 +1,4 @@
 // pages/change/change.js
-const header = require('../../utils/header');
 const {
   URL
 } = require('../../utils/http');
@@ -9,12 +8,16 @@ Page({
   data: {
     oldPsd: '',
     newPsd1: '',
-    newPsd2: ''
+    newPsd2: '',
+    Authorization: ''
   },
 
   /*** 生命周期函数--监听页面加载*/
   onLoad: function (options) {
-
+    const app = getApp();
+    this.setData({
+      Authorization: this.app.globalData.Authorization
+    })
   },
   //获取
   inputOld: function (e) {
@@ -54,25 +57,36 @@ Page({
         Password: this.data.oldPsd,
         PasswordNew: this.data.newPsd1
       };
-      console.log(data);
-      var reqTask = wx.request({
+      wx.request({
         url: `${URL}AccountInfo/ChangePassword`,
         data: data,
-        header: header,
+        header: {
+          'content-type':'application/json',
+          Authorization: this.data.Authorization
+        },
         method: 'POST',
         dataType: 'json',
         responseType: 'text',
         success: (result) => {
-          wx.showToast({
-            title: '修改成功',
-            icon: 'succes',
-            duration: 1500,
-          });
-          setTimeout(function () {
-            wx.navigateTo({
-              url: '../index/index',
+          if(res.data.Code == 200){
+            wx.showToast({
+              title: '修改成功',
+              icon: 'succes',
+              duration: 1500,
+            });
+            setTimeout(function () {
+              wx.navigateTo({
+                url: '../index/index',
+              })
+            }, 1500)
+          } else {
+            wx.showModal({
+              title: res.data.Message,
+              showCancel: false
             })
-          }, 1500)
+            return false;
+          }
+          
         },
         fail: () => {},
         complete: () => {}
