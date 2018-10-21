@@ -1,16 +1,28 @@
 <!--pages/wash/wash.wxml-->
 <view class='container'>
-  <picker  range='{{arr1}}' range-key='dd1' bindchange='picker1Change'>
-    <view class='picker'>
-      {{prompt1}}
+  <picker  range='{{arr1}}' value="{{arr1Index}}" range-key='Name' bindchange='picker1Change'>
+    <view class='picker arrow'>
+      {{arr1[arr1Index].Name}}
     </view>
   </picker>
-   <picker  range='{{arr2}}' range-key='dd2' bindchange='picker2Change'>
+   <!-- <picker  range='{{arr2}}' range-key='dd2' bindchange='picker2Change'>
     <view class='picker'>
       {{prompt2}}
     </view>
-  </picker>
-  <input type='text' placeholder='件数' />
-  <input type='text' disabled='false' placeholder='价格' value='{{price}}'/>
+  </picker> -->
+  <view class="total">
+    <text class="text">
+      件数
+    </text>
+    <view class="count" >
+      <image class="minus" src="../../images/minus.png" mode="aspectFit|aspectFill|widthFix" lazy-load="false" bindtap="minus"></image>
+      {{count}}
+      <image class="add" src="../../images/add.png" mode="aspectFit|aspectFill|widthFix" lazy-load="false" bindtap="add"></image>
+    </view>
+  </view>
+
+  <view class="price" hover-class="none" hover-stop-propagation="false" >
+    <text wx:if="{{price}}">￥{{price}}.00</text>
+  </view>
   <button class='pay' bindtap="pay">支付</button>
 </view>

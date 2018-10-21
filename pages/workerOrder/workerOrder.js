@@ -1,7 +1,5 @@
 // pages/order/order.js
-const {
-  URL
-} = require('../../utils/http');
+const {URL} = require('../../utils/http');
 const DATA = {
   page: 1,
   rows: 10,
@@ -19,11 +17,9 @@ Page({
   onLoad: function (options) {
     const app = getApp();
     const that = this;
-    if (!app.globalData.Authorization) {
-      wx.redirectTo({
-        url: '../index/index'
-      });
-    }
+    if(!app.globalData.Authorization) {wx.redirectTo({
+      url: '../index/index'
+    });}
     this.setData({
       phoneNum: app.globalData.phoneNum
     })
@@ -31,14 +27,14 @@ Page({
       url: `${URL}order/GetOrderList`,
       data: DATA,
       header: {
-        'content-type': 'application/json',
+        'content-type':'application/json',
         Authorization: app.globalData.Authorization
       },
       method: 'POST',
       dataType: 'json',
       responseType: 'text',
-      success: (res) => {
-        if (res.data.Code == 200) {
+      success: (res)=>{
+        if(res.data.Code == 200){
           console.log(res.data.Data);
           that.setData({
             rows: res.data.Data.rows
@@ -51,36 +47,24 @@ Page({
           return false;
         }
       },
-      fail: () => {},
-      complete: () => {}
+      fail: ()=>{},
+      complete: ()=>{}
     });
   },
-  pay: function (event) {
-    const app = getApp();
+  pay: function(val) {
+    console.log(val);
     wx.request({
       url: `${URL}order/GetPay`,
-      data: {
-        id: event.currentTarget.dataset.id
-      },
-      header: {
-        'content-type': 'application/json',
-        Authorization: app.globalData.Authorization
-      },
+      data: {Id: val},
       method: 'POST',
       dataType: 'json',
       responseType: 'text',
-      success: function (res) {
-        if (res.data.Code === 200) {
+      success: function(res) {
+        if(res.data.Code === 200) {
           wx.showModal({
             title: '支付成功！',
-            showCancel: false
+            showCancel:false
           });
-          this.setData({
-            rows: [],
-            Authorization: app.globalData.Authorization,
-            phoneNum: app.globalData.phoneNum
-          })
-          this.onLoad();
         }
       }
     })

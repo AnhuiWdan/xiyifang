@@ -35,19 +35,6 @@ Page({
   //     url: '../mine/mine',
   //   })
   // },
-  washClick: function () {
-    if(!this.data.isLogin) {
-      wx.navigateTo({
-        url: '../login/login',
-      })
-    } else{
-      //跳转我要洗衣
-      wx.navigateTo({
-        url: '../wash/wash',
-      })
-    }
-    
-  },
   orderClick: function () {
     if(!this.data.isLogin) {
       wx.navigateTo({
@@ -56,7 +43,7 @@ Page({
     } else{
        //跳转我的订单
       wx.navigateTo({
-        url: '../order/order',
+        url: '../workerOrder/workerOrder',
       })
     }
     

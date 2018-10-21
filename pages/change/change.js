@@ -16,7 +16,7 @@ Page({
   onLoad: function (options) {
     const app = getApp();
     this.setData({
-      Authorization: this.app.globalData.Authorization
+      Authorization: app.globalData.Authorization
     })
   },
   //获取
@@ -67,7 +67,7 @@ Page({
         method: 'POST',
         dataType: 'json',
         responseType: 'text',
-        success: (result) => {
+        success: (res) => {
           if(res.data.Code == 200){
             wx.showToast({
               title: '修改成功',

@@ -1,10 +1,11 @@
 {
-  "pages": [
+  "pages": ["pages/worker/worker",
+    "pages/order/order",  
+    "pages/wash/wash",
+    "pages/login/login",
     "pages/forget/forget",
     "pages/change/change",
-    "pages/order/order",
-    "pages/login/login",
-    "pages/wash/wash",
+    "pages/workerOrder/workerOrder",
     "pages/index/index",
     "pages/register/register",
     "pages/mine/mine",

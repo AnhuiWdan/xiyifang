@@ -22,33 +22,11 @@ Page({
 
   /*** 页面的初始数据*/
   data: {
-    arr1:[
-      {
-        dd1:1
-      },
-      {
-        dd1: 2
-      },
-      {
-        dd1: 3
-      }
-    ],
-    arr2: [
-      {
-        dd2: 1
-      },
-      {
-        dd2: 2
-      },
-      {
-        dd2: 3
-      }
-    ],
+    arr1:[],
     arr1Index:0,
     prompt1:'选择衣服种类',
-    arr2Index:0,
-    prompt2:'选择衣服类型',
     price:'',
+    count: 0
   },
 
   /*** 生命周期函数--监听页面加载*/
@@ -59,8 +37,10 @@ Page({
       method: 'POST',
       dataType: 'json',
       responseType: 'text',
-      success: (result)=>{
-        console.log(result);
+      success: (res)=>{
+        this.setData({
+          arr1: res.data.Data
+        })
       },
       fail: ()=>{},
       complete: ()=>{}
@@ -71,9 +51,9 @@ Page({
       arr1Index:e.detail.value
     })
    
-    this.setData({
-      prompt1: this.data.arr1[this.data.arr1Index].dd1
-    })
+    // this.setData({
+    //   prompt1: this.data.arr1[this.data.arr1Index].dd1
+    // })
 
   },
   picker2Change: function (e) {
@@ -83,6 +63,24 @@ Page({
     this.setData({
       prompt2: this.data.arr2[this.data.arr2Index].dd2
     })
+
+  },
+  minus: function() {
+    if(this.data.count>0) {
+      let count = this.data.count;
+      this.setData({
+        count: --count
+      })
+    }
+  },
+  add: function() {
+    let count = this.data.count;
+    count++;
+    const price = this.data.arr1[this.data.arr1Index].Price
+    this.setData({
+      count: count,
+      price: price*count
+    });
 
   },
   pay: function() {
@@ -97,7 +95,10 @@ Page({
         wx.showModal({
           title: '下单成功！',
           showCancel:false
-        })
+        });
+        wx.redirectTo({
+          url: '../order/order'
+        });
       },
       fail: ()=>{},
       complete: ()=>{}

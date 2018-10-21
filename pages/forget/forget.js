@@ -164,7 +164,7 @@ Page({
               mask:true
             })
             setTimeout(function(){
-              wx.wx.redirectTo({
+              wx.redirectTo({
                 url: '../login/login',
               })
             },1500)

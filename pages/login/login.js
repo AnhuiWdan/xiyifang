@@ -105,9 +105,32 @@ Page({
             var app = getApp();
             app.globalData.Authorization = res.data.Data;
             app.globalData.phoneNum = that.data.mobile;
-            wx.navigateTo({
-              url: '../index/index',
+            wx.request({
+              url: 'https://xwxapi.itknow.cn/api/AccountInfo/GetUserInfo',
+              header: {
+                'content-type': 'application/json',
+                Authorization: app.globalData.Authorization
+              },
+              method: 'post',
+              dataType: 'json',
+              responseType: 'text',
+              success: function(result) {
+                if(result.data.Code === 200 && result.data.Data.LoginType === 2) {
+                  wx.navigateTo({
+                    url: '../worker/worker',
+                  })
+                } else {
+                  wx.navigateTo({
+                    url: '../index/index',
+                  })
+                }
+              }
             })
+              
+
+
+
+           
           }else{
             wx.showModal({
               title: res.data.Message,
