@@ -1,59 +1,127 @@
 /* pages/wash/wash.wxss */
-.container view{
-  width: 670rpx;
-  height: 80rpx;
+
+
+/* 新 */
+page{
+  padding: 0;
+  height: 100%;
 }
-picker{
-  width: 670rpx;
-  height: 80rpx;
-  margin-bottom: 30rpx;
+.content{
+  width: 750rpx;
+  height: 100%;
+  padding: 0;
 }
-.picker{
-  height: 80rpx;
-  line-height: 80rpx;
-  color: #777;
+.left{
+  width: 200rpx;
+  height: 100%;
 }
-.picker,input{
-  width: 100%;
-  padding: 0 10rpx 0 30rpx;
-  border: none;
-  background-color: #fff;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
+.left view{
+  height: 60rpx;
+  line-height: 60rpx;
+  padding: 20rpx;
+}
+.left view.on{
+  background-color: #fff
+}
+.right{
+  width: 550rpx;
+  height: 100%;
   box-sizing: border-box;
+  padding-bottom: 150rpx;
+  background-color: #fff;
+  padding-right: 20rpx;
+}
+.right .list{
+  height: 200rpx;
+  margin-bottom: 20rpx;
+
 }
 
-.pay{
-  width: 100%;
-  color: #fff;
-  background-color: #1890ff;
+.right .list image{
+  width: 160rpx;
+  height: 160rpx;
+  margin: 20rpx;
 }
-.total {
-  display: flex;
+.right .list .info{
+  width: 330rpx;
+  box-sizing: border-box;
+  height: 60rpx;
+  line-height: 60rpx;
+}
+.right .list .info text{
+  display: block;
+  width: 350rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.right .list .info .count{
+  height: 60rpx;
+}
+.right .list .info .count text{
+  width: 60rpx;
+  height:60rpx;
+  line-height: 60rpx;
+  text-align: center;
+}
+.right .list .info .count image{
+  width: 60rpx;
+  height: 60rpx;
+  margin: 0;
+}
+
+.account{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 750rpx;
+  height: 150rpx;
+  color: #fff;
+  background-color: #515151;
+}
+.account image{
+  width: 150rpx;
+  height: 150rpx;
+  padding-right: 20rpx;
+}
+.account view{
+  height: 150rpx;
+  line-height: 150rpx;
+  box-sizing: border-box;
+}
+.account view.fl{
+  padding-top: 20rpx;
+}
+.account view.fl text{
+  display: block;
+  line-height: 50rpx;
+}
+.account view.fr{
+  background-color: #535257;
+  min-width: 200rpx;
+  text-align: center;
+}
+.account .spList{
+  width: 100%;
+  position: absolute;
+  top: -150rpx;
+  left: 0;
+  color: #000;
   background-color: #fff;
 }
-.total .text {
-  flex: 0 0 100rpx;
-  line-height: 28rpx;
-  margin-left: 30rpx;
-  color: #777;
-}
-.total .count {
-  flex: 1;
-  text-align: right;
-  line-height: 80rpx;
-}
-.count image {
-  display: inline-block;
-  vertical-align: top;
-  height: 60rpx;
-  width: 60rpx;
-  margin: 10rpx 20rpx;
-}
-.price{
+.account .spList view{
+  height: 80rpx;
+  line-height: 60rpx;
+  padding: 10rpx 20rpx;
+  font-size: 24rpx;
   text-align: center;
-  margin-top: 260rpx;
-  margin-bottom: 20rpx;
-  font-size: 66rpx;
-  color: #ff5a00;
 }
+.account .spList .two text{
+  width: 60rpx;
+}
+.account .spList view image{
+  width: 60rpx;
+  height: 60rpx;
+  padding: 0;
+}
+

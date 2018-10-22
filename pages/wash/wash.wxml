@@ -1,28 +1,47 @@
 <!--pages/wash/wash.wxml-->
-<view class='container'>
-  <picker  range='{{arr1}}' value="{{arr1Index}}" range-key='Name' bindchange='picker1Change'>
-    <view class='picker arrow'>
-      {{arr1[arr1Index].Name}}
+<view class='content'>
+  <scroll-view class='left fl' scroll-y='true'>
+    <view wx:for='{{arr1}}'>
+       {{item.Name}}
     </view>
-  </picker>
-   <!-- <picker  range='{{arr2}}' range-key='dd2' bindchange='picker2Change'>
-    <view class='picker'>
-      {{prompt2}}
+  </scroll-view>
+  <scroll-view class='right fr' scroll-y='true'>
+    <view class='list' wx:for='{{arr2}}'>
+      <image class="fl" src="../../images/logo.png" mode="aspectFit|aspectFill|widthFix" lazy-load="false"></image>
+      <view class='fr info'>
+        <text>{{item.Name}}</text>
+        <text>清爽青菜搭配鲜嫩香菇，入口清淡</text>
+        <view class="count" >
+        <text class='fl'>{{item.Price}}</text>
+      <image class="add fr" src="../../images/add.png" mode="aspectFit|aspectFill|widthFix" lazy-load="false" bindtap="add"></image>
+     
+      <text class='fr'>{{count}}</text>
+       <image class="minus fr" src="../../images/minus.png" mode="aspectFit|aspectFill|widthFix" lazy-load="false" bindtap="minus"></image>
     </view>
-  </picker> -->
-  <view class="total">
-    <text class="text">
-      件数
-    </text>
-    <view class="count" >
-      <image class="minus" src="../../images/minus.png" mode="aspectFit|aspectFill|widthFix" lazy-load="false" bindtap="minus"></image>
-      {{count}}
-      <image class="add" src="../../images/add.png" mode="aspectFit|aspectFill|widthFix" lazy-load="false" bindtap="add"></image>
+      </view>
+    </view>
+  </scroll-view>
+  <view class='account'>
+    <image class="minus fl" src="../../images/minus.png" mode="aspectFit|aspectFill|widthFix" lazy-load="false" bindtap="minus"></image>
+    <view class='fl'>
+      <text>未选购商品</text>
+      <text>配送费4.2元</text>
+    </view>
+    <view class='fr'>￥15元起送</view>
+    <view class='spList'>
+      <view>
+        <text class='fl'>已选商品</text>
+        <text class='fr'>清空</text>
+      </view>
+      <view class='two clearfix'>
+        <text class='fl'>男式上衣</text>
+       <text class='fl'>10</text>
+      <image class="add fr" src="../../images/add.png" mode="aspectFit|aspectFill|widthFix" lazy-load="false" bindtap="add"></image>
+     
+      <text class='fr'>1</text>
+       <image class="minus fr" src="../../images/minus.png" mode="aspectFit|aspectFill|widthFix" lazy-load="false" bindtap="minus"></image>
+      </view>
     </view>
   </view>
-
-  <view class="price" hover-class="none" hover-stop-propagation="false" >
-    <text wx:if="{{price}}">￥{{price}}.00</text>
-  </view>
-  <button class='pay' bindtap="pay">支付</button>
 </view>
+  
