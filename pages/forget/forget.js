@@ -86,7 +86,6 @@ Page({
               currentTime--;
               that.setData({
                 sendTime: currentTime + '秒',
-                disabled:true
               })
               if (currentTime <= 0) {
                 clearInterval(interval)
