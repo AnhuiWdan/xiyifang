@@ -1,116 +1,161 @@
-// pages/wash/wash.js\
-
-const header = require("../../utils/header");
-const {URL} = require("../../utils/http");
-const DATA = {
-  "UserId":"762F7AD0-D070-4425-8FB7-E8E78C183C82",
-  "StudentRemark":"备注信息",
-  "clotheslist":
-  [
-      {
-          "ClothesId":"440797B9-B149-4E39-8FF9-A7430302AE62",
-          "Number":1
-      },
-      {
-          "ClothesId":"67246EED-94F2-4D21-97C6-C8E2B93A7126",
-          "Number":2
-      }
-  ]
-};
-
+// pages/wash/wash.js
+const {
+  URL
+} = require('../../utils/http');
 Page({
-
-  /*** 页面的初始数据*/
   data: {
-    arr1:[],
-    arr1Index:0,
-    prompt1:'选择衣服种类',
-    price:'',
-    count: 0
+    showView: false,
+    menus: [],
+    clothesList: [],
+    noMenu: '',
+    menuItme: 0,
+    Authorization: ''
   },
 
-  /*** 生命周期函数--监听页面加载*/
+
   onLoad: function (options) {
+    // 页面初始化 options为页面跳转所带来的参数
     wx.showLoading({
       title: '加载中...',
       mask: true
     });
-    var reqTask = wx.request({
-      url: `${URL}order/GetClothesType`,
-      header: header,
-      method: 'POST',
-      dataType: 'json',
-      responseType: 'text',
-      success: (res)=>{
-        this.setData({
-          arr1: res.data.Data
-        })
-      },
-      fail: ()=>{},
-      complete: ()=>{wx.hideLoading()}
-    });
-  },
-  picker1Change:function(e){
+    const that = this;
+    const app = getApp();
     this.setData({
-      arr1Index:e.detail.value
-    })
-   
-    // this.setData({
-    //   prompt1: this.data.arr1[this.data.arr1Index].dd1
-    // })
-
-  },
-  picker2Change: function (e) {
-    this.setData({
-      arr2Index: e.detail.value
-    })
-    this.setData({
-      prompt2: this.data.arr2[this.data.arr2Index].dd2
-    })
-
-  },
-  minus: function() {
-    if(this.data.count>0) {
-      let count = this.data.count;
-      this.setData({
-        count: --count
-      })
-    }
-  },
-  add: function() {
-    let count = this.data.count;
-    count++;
-    const price = this.data.arr1[this.data.arr1Index].Price
-    this.setData({
-      count: count,
-      price: price*count
-    });
-
-  },
-  pay: function() {
-    wx.showLoading({
-      title: '加载中...',
-      mask: true
+      Authorization: app.globalData.Authorization
     })
     wx.request({
-      url: `${URL}order/SaveOrder`,
-      header: header,
+      url: `${URL}order/GetClothesType`,
+      header: {
+        'content-type': 'application/json',
+        Authorization: that.data.Authorization
+      },
       method: 'POST',
-      data: DATA,
       dataType: 'json',
       responseType: 'text',
-      success: (result)=>{
-        wx.showModal({
-          title: '下单成功！',
-          showCancel:false
-        });
-        wx.redirectTo({
-          url: '../order/order'
-        });
+      success: (res) => {
+        if (res.data.Code == 200) {
+          if (res.data.Data) {
+            that.setData({
+              menus: res.data.Data.ParentList,
+            });
+            wx.request({
+              url: `${URL}order/GetChildeType`,
+              data: {id: res.data.Data.ParentList[0].Id},
+              header: {
+                'content-type': 'application/json',
+                Authorization: that.data.Authorization
+              },
+              method: 'POST',
+              dataType: 'json',
+              responseType: 'text',
+              success: function(result) {
+                if (result.data.Code == 200) {
+                  if(result.data.Data.ClothesList.length) {
+                    const clothes = result.data.Data.ClothesList;
+                    clothes.forEach(value => {
+                      value.cartCount = 0
+                    });
+                    that.setData({
+                      clothesList: clothes
+                    });
+                  }
+                  
+                }
+              }
+            })
+          } else {
+            this.setData({
+              noMenu: '暂无数据'
+            })
+          }
+        } else {
+          wx.showModal({
+            title: res.data.Message,
+            showCancel: false
+          })
+          return false
+        }
       },
-      fail: ()=>{},
-      complete: ()=>{wx.hideLoading()}
+      fail: () => {},
+      complete: () => {
+        wx.hideLoading();
+      }
     });
-  }
- 
+  },
+  onReady: function () {
+    // 页面渲染完成
+  },
+  onShow: function () {
+    // 页面显示
+  },
+  onHide: function () {
+    // 页面隐藏
+  },
+  onUnload: function () {
+    // 页面关闭
+  },
+  toggleList: function () {
+    var that = this;
+    that.setData({
+      showView: (!that.data.showView)
+    })
+    console.log(that.data.showView)
+  },
+  // 菜单切换
+  menuTap: function (event) {
+    const index = event.currentTarget.dataset.index;
+    const that = this;
+    this.setData({
+      menuItme: index
+    });
+    const id = this.data.menus[index].Id;
+    wx.request({
+      url: `${URL}order/GetChildeType`,
+      data: {id: id},
+      header: {
+        'content-type': 'application/json',
+        Authorization: this.data.Authorization
+      },
+      method: 'POST',
+      dataType: 'json',
+      responseType: 'text',
+      success: function(result) {
+        if (result.data.Code == 200) {
+          if(result.data.Data.ClothesList.length) {
+            const clothes = result.data.Data.ClothesList;
+            clothes.forEach(value => {
+              value.cartCount = 0
+            });
+            that.setData({
+              clothesList: clothes
+            });
+          }
+          
+        }
+      }
+    })
+  },
+  // 单件减 
+  minusCartCount: function(event) {
+    const index = event.currentTarget.dataset.index;
+    const clothes = this.data.clothesList;
+    if(clothes[index].cartCount > 0) {
+      clothes[index].cartCount -= 1;
+      this.setData({
+        clothesList: clothes
+      })
+    }
+    return;
+  },
+  // 单件加
+  addCartCount: function(event) {
+    const index = event.currentTarget.dataset.index;
+    const clothes = this.data.clothesList;
+    clothes[index].cartCount += 1
+    this.setData({
+      clothesList: clothes
+    })
+    return;
+  },
 })

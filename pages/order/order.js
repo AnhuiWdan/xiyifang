@@ -16,7 +16,12 @@ Page({
     Authorization: '',
     phoneNum: '',
     detail: false,
-    logistics: false
+    logistics: false,
+    formData: {
+      page: 1,
+      rows: 10,
+      Status: -1
+    }
   },
   /*** 生命周期函数--监听页面加载*/
   onLoad: function (options) {
@@ -29,7 +34,8 @@ Page({
       return;
     }
     this.setData({
-      phoneNum: app.globalData.phoneNum
+      phoneNum: app.globalData.phoneNum,
+      Authorization: app.globalData.Authorization
     })
     wx.showLoading({
       title: '加载中...',
@@ -37,7 +43,7 @@ Page({
     })
     wx.request({
       url: `${URL}order/GetOrderList`,
-      data: DATA,
+      data: this.data.formData,
       header: {
         'content-type': 'application/json',
         Authorization: app.globalData.Authorization
@@ -47,9 +53,9 @@ Page({
       responseType: 'text',
       success: (res) => {
         if (res.data.Code == 200) {
-          console.log(res.data.Data);
+          that.data.formData.page++;
           that.setData({
-            rows: res.data.Data.rows
+            rows: res.data.Data.rows,
           })
         } else {
           wx.showModal({
@@ -63,12 +69,15 @@ Page({
       complete: () => {wx.hideLoading()}
     });
   },
+
+  // 支付
   pay: function (event) {
     const app = getApp();
     wx.showLoading({
       title: '正在支付...',
       mask: true
-    })
+    });
+    const that = this;
     wx.request({
       url: `${URL}order/GetPay`,
       data: {
@@ -92,7 +101,7 @@ Page({
             Authorization: app.globalData.Authorization,
             phoneNum: app.globalData.phoneNum
           })
-          this.onLoad();
+          that.onLoad();
         }
       },
       complete: function() {
@@ -100,12 +109,14 @@ Page({
       }
     })
   },
+  // 扫一扫
   scan: function (event) {
     const app = getApp();
     wx.showLoading({
       title: '加载中...',
       mask:true
     });
+    const that = this;
     wx.scanCode({
       success: (res) => {
         wx.request({
@@ -127,6 +138,7 @@ Page({
                 title: '开箱成功！',
                 showCancel: false
               });
+              that.onLoad();
             } else {
               wx.showModal({
                 title: res.data.Message,
@@ -137,9 +149,7 @@ Page({
           }
         })
       },
-      fail: (rej) => {
-        console.log(rej);
-      },
+      fail: (rej) => {},
       complete: ()=>{wx.hideLoading()}
     })
   },
@@ -175,5 +185,94 @@ Page({
     wx.navigateTo({
       url: '../wash/wash'
     });
+  },
+  // 下拉刷新
+  onPullDownRefresh: function () {
+    // 显示顶部刷新图标
+    wx.showNavigationBarLoading();
+    var that = this;
+    this.data.formData.page = 1;
+    console.log(this.data.formData);
+    wx.request({
+      url: `${URL}order/GetOrderList`,
+      data: this.data.formData,
+      header: {
+        'content-type': 'application/json',
+        Authorization: this.data.Authorization
+      },
+      method: 'POST',
+      dataType: 'json',
+      responseType: 'text',
+      success: function (res) {
+        that.setData({
+          rows: res.data.Data.rows,
+        });
+        wx.showToast({
+          title: '已经是最新的了',
+          icon:'success',
+          duration: 2000,
+          mask:true
+        });
+        // 隐藏导航栏加载框
+        wx.hideNavigationBarLoading();
+        // 停止下拉动作
+        wx.stopPullDownRefresh();
+      },
+      complete: function() {
+        // 隐藏导航栏加载框
+        wx.hideNavigationBarLoading();
+        // 停止下拉动作
+        wx.stopPullDownRefresh();
+      }
+    })
+  },
+
+  /**
+   * 页面上拉触底事件的处理函数
+   */
+  onReachBottom: function () {
+    var that = this;
+    // 显示加载图标
+    wx.showLoading({
+      title: '玩命加载中',
+      mask: true
+    })
+    // 页数+1
+    this.data.formData.page += 1;
+    console.log(this.data.formData);
+    wx.request({
+      url: `${URL}order/GetOrderList`,
+      data: this.data.formData,
+      header: {
+        'content-type': 'application/json',
+        Authorization: this.data.Authorization
+      },
+      method: 'POST',
+      dataType: 'json',
+      responseType: 'text',
+      success: function (res) {
+        // 回调函数
+        var rows = that.data.rows;
+ 
+        for (var i = 0; i < res.data.Data.rows.length; i++) {
+          rows.push(res.data.Data.rows[i]);
+        }
+        if(res.data.Data.rows.length === 0) {
+          wx.showToast({
+            title: '已经到底了',
+            duration: 2000,
+            mask: true
+          })
+        }
+        // 设置数据
+        that.setData({
+          rows: rows
+        })
+        // 隐藏加载框
+        wx.hideLoading();
+      },
+      complete: function() {wx.hideLoading()}
+    })
+ 
   }
 })

@@ -14,6 +14,8 @@
         <text class='fr state' wx:elif="{{item.Status===6}}">已签收</text>
         <text class='fr state' wx:elif="{{item.Status===7}}">工人拒收</text>
         <text class='fr state' wx:elif="{{item.Status===8}}">退款</text>
+        <text class='fr state' wx:elif="{{item.Status===9}}">已退款</text>
+        <text class='fr state' wx:elif="{{item.Status===10}}">已派</text>
     </view>
     <view class='middle'>
         <view class='clearfix'>
@@ -22,7 +24,7 @@
         </view>
         <view class='clearfix'>
             <text class='fl'>工人：</text>
-            <text class='fl add'>{{item.WorkPhone}}</text>
+            <text class='fl add'>{{item.WorkName}}  {{item.WorkPhone}}</text>
         </view>
         <view>
             <text>下单时间：</text>
@@ -53,8 +55,7 @@
     </view>
     <view class='bottom' wx:if="{{item.Status===5}}">
         <text class='fl' bindtap="openDetail" data-index="{{index}}">详情</text>
-        <text class='fl' bindtap="openLogistics" data-index="{{index}}">物流</text>
-        <text class='fr blue' bindtap="scan" data-indentCode="{{item.IndentCode}}">扫一扫</text>
+        <text class='fr blue' bindtap="openLogistics" data-index="{{index}}">物流</text>
     </view>
     <view class='bottom' wx:if="{{item.Status===6}}">
         <text class='fl' bindtap="openDetail" data-index="{{index}}">详情</text>
@@ -67,6 +68,15 @@
     </view>
     <view class='bottom' wx:if="{{item.Status===8}}">
         <text class='fl blue'  bindtap="openDetail" data-index="{{index}}">详情</text>
+    </view>
+     <view class='bottom' wx:if="{{item.Status===9}}">
+        <text class='fl' bindtap="openDetail" data-index="{{index}}">详情</text>
+        <text class='fr blue' bindtap="openLogistics" data-index="{{index}}">物流</text>
+    </view>
+     <view class='bottom' wx:if="{{item.Status===10}}">
+        <text class='fl' bindtap="openDetail" data-index="{{index}}">详情</text>
+         <text class='fl'>拒收</text>
+         <text class='fr blue' bindtap="scan" data-indentCode="{{item.IndentCode}}">扫一扫</text>
     </view>
 </view>
 <!-- <view class='more'>查看更多订单</view> -->

@@ -65,7 +65,7 @@ Page({
       return false
     }else{
        wx.showLoading({
-         title: '发送中',
+         title: '发送中...',
          mask: true
        });
       wx.request({
@@ -80,12 +80,15 @@ Page({
         success:function(res){
           wx.hideLoading();
           if(res.data.Code == '200'){
-            var currentTime = that.data.currentTime
+            var currentTime = that.data.currentTime;
+            that.setData({
+              disabled: true,
+              sendTime: currentTime + '秒',
+            })
             interval = setInterval(function () {
               currentTime--;
               that.setData({
                 sendTime: currentTime + '秒',
-                disabled:true
               })
               if (currentTime <= 0) {
                 clearInterval(interval)
@@ -166,14 +169,14 @@ Page({
             wx.showToast({
               title: '修改成功',
               icon:'success',
-              duration:1500,
+              duration:2000,
               mask:true
             })
             setTimeout(function(){
               wx.redirectTo({
                 url: '../login/login',
               })
-            },1500)
+            },2000)
           } else {
             wx.showModal({
               title: res.data.Message,

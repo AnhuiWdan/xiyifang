@@ -1,28 +1,93 @@
-<!--pages/wash/wash.wxml-->
-<view class='container'>
-  <picker  range='{{arr1}}' value="{{arr1Index}}" range-key='Name' bindchange='picker1Change'>
-    <view class='picker arrow'>
-      {{arr1[arr1Index].Name}}
-    </view>
-  </picker>
-   <!-- <picker  range='{{arr2}}' range-key='dd2' bindchange='picker2Change'>
-    <view class='picker'>
-      {{prompt2}}
-    </view>
-  </picker> -->
-  <view class="total">
-    <text class="text">
-      件数
-    </text>
-    <view class="count" >
-      <image class="minus" src="../../images/minus.png" mode="aspectFit|aspectFill|widthFix" lazy-load="false" bindtap="minus"></image>
-      {{count}}
-      <image class="add" src="../../images/add.png" mode="aspectFit|aspectFill|widthFix" lazy-load="false" bindtap="add"></image>
-    </view>
-  </view>
 
-  <view class="price" hover-class="none" hover-stop-propagation="false" >
-    <text wx:if="{{price}}">￥{{price}}.00</text>
+<!--pages/wash/wash.wxml-->
+<view class="goods">
+  <view class="menu-wrapper">
+    <scroll-view scroll-y="true">
+      <view class="menu-item {{menuItme === index? 'on': ''}}"  data-index="{{index}}" bindtap="menuTap" wx:for="{{menus}}" wx:key="index">
+        <view class="text">
+          {{item.Name}}
+        </view>
+      </view>
+    </scroll-view>
   </view>
-  <button class='pay' bindtap="pay">支付</button>
+  <scroll-view scroll-y="true" style="height: 100%;" class="clothess-wrapper">
+    <view class="clothes-list clothes-list-hook" wx:for="{{clothesList}}" wx:key="{{index}}">
+      <view  class="clothes-item">
+        <view class="icon">
+          <image src="http://fuss10.elemecdn.com/c/cd/c12745ed8a5171e13b427dbc39401jpeg.jpeg?imageView2/1/w/114/h/114" style="width: 114rpx;height: 114rpx"></image>
+        </view>
+        <view class="content">
+            <view class="name">{{item.Name}}</view>
+            <!-- <view class="desc">一二三四五 上山打老虎</view> -->
+            <view class="price" style="margin-top: 20rpx;">
+            <view class="now">￥{{item.Price}}</view>
+          </view>
+
+          <!--cartControl-->
+          <view class="cartControl-wrapper">
+            <view class="cartControl">
+              <view name="fade">
+                <view class="cart-decrease" >
+                  <view class="inner iconfont icon-jian" style="font-size:48rpx;color:#00A0DC;" bindtap="minusCartCount" data-index="{{index}}"></view>
+                </view>
+                <view class="cart-count">{{item.cartCount}}</view>
+                <view class="iconfont icon-jia cart-add " style="color:#00A0DC" bindtap="addCartCount"  data-index="{{index}}"></view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!--shopCart-->
+  <view>
+    <view>
+      <view class="shopCart">
+        <view class="content" bindtap="toggleList">
+          <view class="content-left">
+            <view class="logo-wrapper">
+              <view class="logo highlight">
+                <view class="iconfont icon-gouwuche highlight"></view>
+              </view>
+              <view class="num">{{2}}</view>
+            </view>
+            <view class="price highlight">￥{{20}}</view>
+            <view class="desc">另需配送费￥{{5}}元</view>
+          </view>
+          <view class="content-right">
+            <view class="pay enough" :class="payClass">
+              结算
+            </view>
+          </view>
+        </view>
+        <view class="shopcart-list hide{{showView?'show':''}}">
+          <view class="list-header">
+            <view class="title">购物车</view>
+            <text class="empty">清空</text>
+          </view>
+          <view class="list-content">
+            <view class="shopcart-clothes">
+              <text class="name">男式上衣</text>
+              <view class="price" >
+                <span>￥{{20}}</span> 
+              </view>
+              <!--cartControl-->
+              <view class="cartControl-wrapper" style="bottom:20rpx;">
+                <view class="cartControl" style="width:160rpx;">
+                  <view name="fade">
+                    <view class="cart-decrease" style="display:inline-block;font-size:0;vertical-align: top;" >
+                      <view class="inner iconfont icon-jian" style="font-size:48rpx;color:#00A0DC;"></view>
+                    </view>
+                    <view class="cart-count" style="display:inline-block;width:64rpx;text-align:center;font-size:30rpx;line-height:48rpx;margin-top:6rpx">1</view>
+                    <view class=" iconfont icon-jia cart-add " style="vertical-align: top;margin-top: 4rpx;font-size:48rpx;color:#00A0DC; padding:0;"></view>
+                  </view>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
 </view>

@@ -77,13 +77,13 @@ Page({
             wx.showToast({
               title: '修改成功',
               icon: 'succes',
-              duration: 1500,
+              duration: 2000,
             });
             setTimeout(function () {
               wx.navigateBack({
                 delta: 1
               });
-            }, 1500)
+            }, 2000)
           } else {
             wx.showModal({
               title: res.data.Message,

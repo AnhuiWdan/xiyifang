@@ -1,9 +1,9 @@
 {
   "pages": [
+    "pages/wash/wash",
     "pages/login/login",
     "pages/worker/worker",
     "pages/order/order",  
-    "pages/wash/wash",
     "pages/forget/forget",
     "pages/change/change",
     "pages/workerOrder/workerOrder",
@@ -13,7 +13,7 @@
     "pages/logs/logs"
   ],
   "window": {
-    "backgroundTextStyle": "light",
+    "backgroundTextStyle": "drak",
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "洗衣坊",
     "navigationBarTextStyle": "black"

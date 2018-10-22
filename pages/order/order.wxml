@@ -14,15 +14,17 @@
         <text class='fr state' wx:elif="{{item.Status===6}}">已签收</text>
         <text class='fr state' wx:elif="{{item.Status===7}}">工人拒收</text>
         <text class='fr state' wx:elif="{{item.Status===8}}">退款</text>
+        <text class='fr state' wx:elif="{{item.Status===9}}">已退款</text>
+        <text class='fr state' wx:elif="{{item.Status===10}}">已派</text>
     </view>
     <view class='middle'>
         <view>
             <text>学生:</text>
             <text class='blue'>{{phoneNum}}</text>
         </view>
-        <view class='clearfix' wx:if="{{item.Status>0 && item.WorksName}}">
+        <view class='clearfix' wx:if="{{item.Status>0 && item.WorkName}}">
             <text class='fl'>工人：</text>
-            <text class='fl add'>{{item.WorksName}}</text>
+            <text class='fl add'>{{item.WorkName}}  {{item.WorkPhone}}</text>
         </view>
         <view class='clearfix' wx:else>
             <text class='fl'>工人：</text>
@@ -70,6 +72,14 @@
     </view>
     <view class='bottom' wx:if="{{item.Status===8}}">
         <text class='fl blue' bindtap="openDetail" data-index="{{index}}">详情</text>
+    </view>
+    <view class='bottom' wx:if="{{item.Status===9}}">
+        <text class='fl' bindtap="openDetail" data-index="{{index}}">详情</text>
+        <text class='fr blue' bindtap="openLogistics" data-index="{{index}}">物流</text>
+    </view>
+    <view class='bottom' wx:if="{{item.Status===10}}">
+        <text class='fl' bindtap="openDetail" data-index="{{index}}">详情</text>
+        <text class='fr blue' bindtap="openLogistics" data-index="{{index}}">物流</text>
     </view>
 </view>
 <view class='notRows' wx:if="{{!rows.length}}">暂无订单</view>
