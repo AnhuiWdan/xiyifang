@@ -77,7 +77,11 @@ Page({
         success:function(res){
           console.log(res.data);
           if(res.data.Code == '200'){
-            var currentTime = that.data.currentTime
+            var currentTime = that.data.currentTime;
+            that.setData({
+              disabled: true,
+              sendTime: currentTime + '秒',
+            })
             interval = setInterval(function () {
               currentTime--;
               that.setData({
