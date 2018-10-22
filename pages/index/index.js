@@ -80,8 +80,8 @@ Page({
     const app = getApp();
     app.globalData.Authorization = '';
     app.globalData.phoneNum = '';
-    wx.navigateTo({
-      url: '../login/login',
+    wx.redirectTo({
+      url: '../login/login'
     });
     this.setData({
       isLogin: false,

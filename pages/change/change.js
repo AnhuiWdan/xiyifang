@@ -57,6 +57,10 @@ Page({
         Password: this.data.oldPsd,
         PasswordNew: this.data.newPsd1
       };
+      wx.showLoading({
+        title: '加载中',
+        mask: true
+      });
       wx.request({
         url: `${URL}AccountInfo/ChangePassword`,
         data: data,
@@ -68,6 +72,7 @@ Page({
         dataType: 'json',
         responseType: 'text',
         success: (res) => {
+          wx.hideLoading();
           if(res.data.Code == 200){
             wx.showToast({
               title: '修改成功',
@@ -75,9 +80,9 @@ Page({
               duration: 1500,
             });
             setTimeout(function () {
-              wx.navigateTo({
-                url: '../index/index',
-              })
+              wx.navigateBack({
+                delta: 1
+              });
             }, 1500)
           } else {
             wx.showModal({
@@ -88,8 +93,8 @@ Page({
           }
           
         },
-        fail: () => {},
-        complete: () => {}
+        fail: () => {wx.hideLoading()},
+        complete: () => { wx.hideLoading()}
       });
     }
   },

@@ -89,6 +89,10 @@ Page({
       return false
     }else {
       const that = this;
+      wx.showLoading({
+        title: '加载中',
+        mask: true
+      })
       wx.request({
         url: 'https://xwxapi.itknow.cn/api/AccountManage/UserLogin',
         data:{
@@ -101,6 +105,8 @@ Page({
         },
         method: 'post',
         success:function(res){
+          wx.hideLoading();
+          that.onLoad();
           if(res.data.Code == 200){
             var app = getApp();
             app.globalData.Authorization = res.data.Data;
@@ -116,11 +122,11 @@ Page({
               responseType: 'text',
               success: function(result) {
                 if(result.data.Code === 200 && result.data.Data.LoginType === 2) {
-                  wx.navigateTo({
+                  wx.redirectTo({
                     url: '../worker/worker',
                   })
                 } else {
-                  wx.navigateTo({
+                  wx.redirectTo({
                     url: '../index/index',
                   })
                 }

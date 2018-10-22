@@ -64,7 +64,10 @@ Page({
       })
       return false
     }else{
-      console.log(that.data.mobile);
+      wx.showLoading({
+        title: '正在发送...',
+        mask: true
+      })
       wx.request({
         url: 'https://xwxapi.itknow.cn/api/AccountManage/SendAuthCode',
         data:{
@@ -97,8 +100,8 @@ Page({
           }
         },
         fail:function(res){
-          console.log(res.data)
-        }
+        },
+        complete: function() {wx.hideLoading()}
       })
     }
   },
@@ -142,8 +145,10 @@ Page({
       })
       return false
     }else {
-      console.log('111');
-      
+      wx.showLoading({
+        title: '加载中...',
+        mask: true
+      })
       wx.request({
         url: 'https://xwxapi.itknow.cn/api/AccountManage/UserRegister',
         data:{
@@ -161,14 +166,14 @@ Page({
             wx.showToast({
               title: '注册成功',
               icon:'success',
-              duration:1500,
+              duration:500,
               mask:true
             })
             setTimeout(function(){
-              wx.navigateTo({
+              wx.redirectTo({
                 url: '../login/login',
               })
-            },1500)
+            },500)
             
           } else {
             wx.showModal({
@@ -177,7 +182,8 @@ Page({
             })
             return false
           }
-        }
+        },
+        complete: function() {wx.hideLoading()}
       })
     }
   }

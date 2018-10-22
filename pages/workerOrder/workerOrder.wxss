@@ -121,3 +121,10 @@ page{
 }
 
 
+
+.notRows{
+  margin-top: 100rpx;
+  text-align: center;
+  color: #666;
+  font-size: 30rpx;
+}

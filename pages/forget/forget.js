@@ -64,7 +64,10 @@ Page({
       })
       return false
     }else{
-      console.log(that.data.mobile);
+       wx.showLoading({
+         title: '发送中',
+         mask: true
+       });
       wx.request({
         url: 'https://xwxapi.itknow.cn/api/AccountManage/SendAuthCode',
         data:{
@@ -75,7 +78,7 @@ Page({
         },
         method:'post',
         success:function(res){
-          console.log(res.data);
+          wx.hideLoading();
           if(res.data.Code == '200'){
             var currentTime = that.data.currentTime
             interval = setInterval(function () {
@@ -95,9 +98,10 @@ Page({
             }, 1000)
           }
         },
-        fail:function(res){
-          console.log(res.data)
-        }
+        fail:function(){
+          wx.hideLoading();
+        },
+        complete: function() {wx.hideLoading()}
       })
     }
   },
@@ -141,8 +145,10 @@ Page({
       })
       return false
     }else {
-      console.log('111');
-      
+      wx.showLoading({
+        title: '加载中',
+        mask: true
+      });
       wx.request({
         url: 'https://xwxapi.itknow.cn/api/AccountManage/RetrievePassword',
         data:{
@@ -155,7 +161,7 @@ Page({
         },
         method:'post',
         success:function(res){
-          console.log(res.data);
+          wx.hideLoading();
           if(res.data.Code == 200){
             wx.showToast({
               title: '修改成功',
@@ -175,7 +181,9 @@ Page({
             })
             return false
           }
-        }
+        },
+        fail: () => { wx.hideLoading() },
+        complete: () => { wx.hideLoading() }
       })
     }
   }

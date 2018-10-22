@@ -31,6 +31,10 @@ Page({
 
   /*** 生命周期函数--监听页面加载*/
   onLoad: function (options) {
+    wx.showLoading({
+      title: '加载中...',
+      mask: true
+    });
     var reqTask = wx.request({
       url: `${URL}order/GetClothesType`,
       header: header,
@@ -43,7 +47,7 @@ Page({
         })
       },
       fail: ()=>{},
-      complete: ()=>{}
+      complete: ()=>{wx.hideLoading()}
     });
   },
   picker1Change:function(e){
@@ -84,6 +88,10 @@ Page({
 
   },
   pay: function() {
+    wx.showLoading({
+      title: '加载中...',
+      mask: true
+    })
     wx.request({
       url: `${URL}order/SaveOrder`,
       header: header,
@@ -101,7 +109,7 @@ Page({
         });
       },
       fail: ()=>{},
-      complete: ()=>{}
+      complete: ()=>{wx.hideLoading()}
     });
   }
  

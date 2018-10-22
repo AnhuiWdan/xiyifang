@@ -34,3 +34,4 @@ canvas {
   color: #999;
 }
 .registerText{display: inline-block;}
+

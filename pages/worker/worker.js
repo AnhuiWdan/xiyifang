@@ -19,6 +19,10 @@ Page({
     }
   },
   scan() {
+    wx.showLoading({
+      title: '加载中...',
+      mask: true
+    })
     wx.scanCode({
       success: (res)=> {
         console.log(res);
@@ -26,6 +30,9 @@ Page({
       },
       fail: (rej)=> {
         console.log(rej);
+      },
+      complete: function() {
+        wx.hideLoading();
       }
     })
   },
@@ -67,7 +74,7 @@ Page({
     const app = getApp();
     app.globalData.Authorization = '';
     app.globalData.phoneNum = '';
-    wx.navigateTo({
+    wx.redirectTo({
       url: '../login/login',
     });
     this.setData({
