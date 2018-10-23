@@ -52,8 +52,8 @@ Page({
       dataType: 'json',
       responseType: 'text',
       success: (res) => {
+        wx.hideLoading();
         if (res.data.Code == 200) {
-          that.data.formData.page++;
           that.setData({
             rows: res.data.Data.rows,
           })
@@ -92,16 +92,37 @@ Page({
       responseType: 'text',
       success: function (res) {
         if (res.data.Code === 200) {
+         // that.onLoad();
           wx.showModal({
             title: '支付成功！',
             showCancel: false
           });
-          this.setData({
-            rows: [],
-            Authorization: app.globalData.Authorization,
-            phoneNum: app.globalData.phoneNum
-          })
-          that.onLoad();
+          that.data.formData.page = 1;
+          wx.request({
+            url: `${URL}order/GetOrderList`,
+            data: that.data.formData,
+            header: {
+              'content-type': 'application/json',
+              Authorization: that.data.Authorization
+            },
+            method: 'POST',
+            dataType: 'json',
+            responseType: 'text',
+            success: (result) => {
+              if (result.data.Code == 200) {
+                that.setData({
+                  rows: result.data.Data.rows,
+                })
+              } else {
+                wx.showModal({
+                  title: result.data.Message,
+                  showCancel: false
+                })
+                return false;
+              }
+            }
+          });
+          
         }
       },
       complete: function() {
@@ -192,7 +213,6 @@ Page({
     wx.showNavigationBarLoading();
     var that = this;
     this.data.formData.page = 1;
-    console.log(this.data.formData);
     wx.request({
       url: `${URL}order/GetOrderList`,
       data: this.data.formData,
@@ -239,7 +259,6 @@ Page({
     })
     // 页数+1
     this.data.formData.page += 1;
-    console.log(this.data.formData);
     wx.request({
       url: `${URL}order/GetOrderList`,
       data: this.data.formData,

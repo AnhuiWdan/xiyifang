@@ -132,8 +132,7 @@ Page({
           }
         })
       },
-      fail: (rej) => {
-        console.log(rej);
+      fail: () => {
       },
       complete: function () {
         wx.hideLoading();
@@ -142,7 +141,6 @@ Page({
     })
   },
   openDetail: function (event) {
-    console.log(event.currentTarget.dataset.index);
     const index = event.currentTarget.dataset.index
     const row = this.data.rows[index];
     this.setData({
@@ -151,7 +149,6 @@ Page({
     })
   },
   openLogistics: function (event) {
-    console.log(event.currentTarget.dataset.index);
     const index = event.currentTarget.dataset.index
     const row = this.data.rows[index];
     this.setData({

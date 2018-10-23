@@ -14,6 +14,14 @@ scroll-view{
   bottom: 92rpx;
   overflow: hidden;
 }
+.washModal{
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background-color: rgba(7, 17, 27, 0.4);
+}
 
 .goods .menu-wrapper {
   flex: 0 0 160rpx;

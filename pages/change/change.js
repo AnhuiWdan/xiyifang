@@ -78,12 +78,15 @@ Page({
               title: '修改成功',
               icon: 'succes',
               duration: 2000,
+              success: function() {
+                setTimeout(function () {
+                  wx.navigateBack({
+                    delta: 1
+                  });
+                }, 2000)
+              }
             });
-            setTimeout(function () {
-              wx.navigateBack({
-                delta: 1
-              });
-            }, 2000)
+            
           } else {
             wx.showModal({
               title: res.data.Message,

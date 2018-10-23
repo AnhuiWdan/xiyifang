@@ -33,7 +33,7 @@ page{
   overflow: hidden;
   text-align: right;
   margin-right: 80rpx;
-  margin-top: 90rpx;
+  margin-top: 80rpx;
   height: 150rpx;
   width: 150rpx;
   border-radius:50%;

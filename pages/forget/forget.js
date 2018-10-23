@@ -169,14 +169,17 @@ Page({
             wx.showToast({
               title: '修改成功',
               icon:'success',
-              duration:2000,
-              mask:true
+              duration:20000,
+              mask:true,
+              success: function() {
+                setTimeout(function () {
+                  wx.redirectTo({
+                    url: '../login/login',
+                  })
+                }, 2000)
+              }
             })
-            setTimeout(function(){
-              wx.redirectTo({
-                url: '../login/login',
-              })
-            },2000)
+            
           } else {
             wx.showModal({
               title: res.data.Message,

@@ -50,7 +50,6 @@ Page({
   getCode:function(){
     var interval = null ;
     var that = this;
-    console.log(that.data.mobile);
     if (that.data.mobile == ''){
       wx.showModal({
         title: '手机号不能为空！',
@@ -79,7 +78,6 @@ Page({
         },
         method:'post',
         success:function(res){
-          console.log(res.data);
           if(res.data.Code == '200'){
             var currentTime = that.data.currentTime;
             that.setData({
@@ -164,20 +162,21 @@ Page({
         },
         method:'post',
         success:function(res){
-          console.log(res.data);
+          wx.hideLoading();
           if(res.data.Code == 200){
             wx.showToast({
               title: '注册成功',
               icon:'success',
-              duration: 2000,
-              mask:true
-            });
-            setTimeout(function(){
-              wx.redirectTo({
-                url: '../login/login',
-              })
-            },2000)
-            
+              duration: 20000,
+              mask:true,
+              success: function(){
+                setTimeout(function () {
+                  wx.redirectTo({
+                    url: '../login/login',
+                  })
+                }, 2000)
+              }
+            });        
           } else {
             wx.showModal({
               title: res.data.Message,

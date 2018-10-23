@@ -144,7 +144,8 @@ Page({
             })
             return false
           }
-        }
+        },
+        complete: function() {wx.hideLoading()}
 
       })
     }
