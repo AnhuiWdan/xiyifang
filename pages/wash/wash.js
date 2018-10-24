@@ -152,6 +152,14 @@ Page({
                 clothesAll: clothesAll,
                 clothesAllIndex: clothesAll.length - 1
               });
+            } else {
+              const clothes = result.data.Data.ClothesList;
+              clothesAll.push(clothes);
+              that.setData({
+                clothesList: clothes,
+                clothesAll: clothesAll,
+                clothesAllIndex: clothesAll.length - 1
+              });
             }
 
           }

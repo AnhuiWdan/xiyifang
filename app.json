@@ -1,8 +1,9 @@
 {
   "pages": [
+    "pages/pay/pay",
+    "pages/wash/wash",
     "pages/logistics/logistics",
     "pages/login/login",
-    "pages/wash/wash",
     "pages/worker/worker",
     "pages/order/order",  
     "pages/forget/forget",

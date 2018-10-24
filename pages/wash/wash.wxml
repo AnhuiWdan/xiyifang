@@ -11,7 +11,7 @@
     <view class="clothes-list clothes-list-hook" wx:for="{{clothesList}}" wx:key="{{index}}">
       <view class="clothes-item">
         <view class="icon">
-          <image src="http://fuss10.elemecdn.com/c/cd/c12745ed8a5171e13b427dbc39401jpeg.jpeg?imageView2/1/w/114/h/114" style="width: 114rpx;height: 114rpx"></image>
+          <image src="https://xwxapi.itknow.cn/file/showimg?filename={{item.ImgUrl}}" style="width: 114rpx;height: 114rpx"></image>
         </view>
         <view class="content">
           <view class="name">{{item.Name}}</view>
