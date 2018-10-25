@@ -8,6 +8,22 @@ page {
     flex-direction: column;
     height: 100%;
 }
+.statu{
+    flex: 0 0 172rpx;
+    box-sizing: border-box;
+    border-top: 1rpx solid #ddd;
+    padding: 0 30rpx;
+    margin-bottom: 20rpx;
+    background-color: #fff;
+    font-size: 26rpx;
+}
+.statu .clothes {
+    border-bottom: none;
+}
+.statu .clothes .label{
+    flex: 0 0 120rpx;
+}
+
 .header {
     flex: 0 0 80rpx;
     display: flex;
@@ -15,7 +31,6 @@ page {
     line-height: 40rpx;
     padding: 20rpx 30rpx;
     background-color: #fff;
-    border-top: 1rpx solid #ddd;
     border-bottom: 1rpx solid #ddd;
     font-size: 26rpx;
 }
@@ -124,7 +139,7 @@ page {
 .remark .textArea {
     width: 100%;
 }
-.pay {
+/* .pay {
     box-sizing: border-box;
     position: fixed;
     bottom: 0;
@@ -143,4 +158,14 @@ page {
     margin: 0;
     border-radius: 50rpx; 
     background-color: #018ff2;
+} */
+.cancel{
+    flex: 0 0 64rpx;
+    padding: 0 30rpx;
+    line-height: 64rpx;
+    border-top: 1rpx solid #ddd;
+    background-color: #fff;
+}
+.red{
+    color: red!important;
 }

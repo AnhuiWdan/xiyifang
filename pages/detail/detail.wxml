@@ -1,0 +1,87 @@
+<view class="main">
+    <view class="statu">
+        <view class="clothes">
+            <view class="clothes-class">
+                <view class="label">订单状态:</view>
+                <view class="clothe">已寄出</view>
+            </view>
+            <view class="clothes-class">
+                <view class="label">订单编号:</view>
+                <view class="clothe">201810222222222131</view>
+            </view>
+            <view class="clothes-type">
+                <view class="label">下单时间:</view>
+                <view class="clothe">2018-10-22 23:20:10</view>
+            </view>
+        </view>
+    </view>
+
+    <view class="header">
+        <image class="logo" src="../../images/logo.png" mode="aspectFit|aspectFill|widthFix" lazy-load="false"></image>
+        小浣熊洗衣
+    </view>
+    <scroll-view scroll-y="{{true}}" scroll-with-animation="{{true}}">
+        <view class="content">
+            <view class="clothes-list">
+                <!-- <scroll-view scroll-y="{{true}}" style="max-height: {{height}}rpx;">
+                <block wx:for="{{clothes}}">
+                
+                </scroll-view> -->
+                <block>
+                    <view class="clothes">
+                        <view class="clothes-class">
+                            <view class="label">衣服种类:</view>
+                            <view class="clothe">男装</view>
+                            <view class="price">￥20</view>
+                        </view>
+                        <view class="clothes-type">
+                            <view class="label">衣服类型:</view>
+                            <view class="clothe">皮大衣</view>
+                            <view class="number">x1</view>
+                        </view>
+                    </view>
+                </block>
+            </view>
+            <!-- <view class="more">
+                展开更多
+                <image class="icon" src="../../images/down.png" mode="aspectFit|aspectFill|widthFix" lazy-load="false"></image>
+            </view> -->
+            <view class="totalPrice">
+                订单总价:
+                <view class="price">
+                    <text style="font-size: 30rpx">￥</text>
+                    120
+                </view>
+            </view>
+            <!-- <view class="remark">
+                <textarea class="textArea" placeholder="请填写其他备注信息，以便为您带来更优质的服务~" maxlength="-1"></textarea>
+            </view> -->
+        </view>
+    </scroll-view>
+    <!-- <view class="pay">
+        <button class="btn">立即支付</button>
+    </view> -->
+</view>
+
+
+<view class="main" wx:if="{{false}}">
+    <view class="cancel">
+        您的订单已取消
+    </view>
+    <view class="statu">
+        <view class="clothes">
+            <view class="clothes-class">
+                <view class="label">订单状态:</view>
+                <view class="clothe red">已寄出</view>
+            </view>
+            <view class="clothes-class">
+                <view class="label">订单编号:</view>
+                <view class="clothe">201810222222222131</view>
+            </view>
+            <view class="clothes-type">
+                <view class="label">下单时间:</view>
+                <view class="clothe">2018-10-22 23:20:10</view>
+            </view>
+        </view>
+    </view>
+</view>

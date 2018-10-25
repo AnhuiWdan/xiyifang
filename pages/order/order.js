@@ -12,7 +12,6 @@ Page({
   /*** 页面的初始数据*/
   data: {
     rows: [],
-    row: {},
     Authorization: '',
     phoneNum: '',
     detail: false,
@@ -177,29 +176,17 @@ Page({
   openDetail: function(event) {
     console.log(event.currentTarget.dataset.index);
     const index = event.currentTarget.dataset.index
-    const row = this.data.rows[index];
-    this.setData({
-      row: row
-    })
+    const Id = this.data.rows[index].Id;
+    wx.navigateTo({
+      url: '../detail/detail?id='+ Id,
+    });
   },
   openLogistics: function(event) {
     console.log(event.currentTarget.dataset.index);
     const index = event.currentTarget.dataset.index
-    const row = this.data.rows[index];
-    this.setData({
-      row: row
-    })
-  },
-  detailTap: function() {
-    this.setData({
-      detail: false,
-      row: {}
-    });
-  },
-  logisticsTap: function() {
-    this.setData({
-      logistics: false,
-      row: {}
+    const Id = this.data.rows[index].Id;
+    wx.navigateTo({
+      url: '../logistics/logistics?id='+Id
     })
   },
   toWash: function() {
@@ -230,7 +217,7 @@ Page({
         wx.showToast({
           title: '已经是最新的了',
           icon:'success',
-          duration: 2000,
+          duration: 1500,
           mask:true
         });
         // 隐藏导航栏加载框
@@ -272,14 +259,15 @@ Page({
       success: function (res) {
         // 回调函数
         var rows = that.data.rows;
- 
+        // 隐藏加载框
+        wx.hideLoading();
         for (var i = 0; i < res.data.Data.rows.length; i++) {
           rows.push(res.data.Data.rows[i]);
         }
         if(res.data.Data.rows.length === 0) {
           wx.showToast({
             title: '已经到底了',
-            duration: 2000,
+            duration: 1500,
             mask: true
           })
         }
@@ -287,10 +275,8 @@ Page({
         that.setData({
           rows: rows
         })
-        // 隐藏加载框
-        wx.hideLoading();
-      },
-      complete: function() {wx.hideLoading()}
+        
+      }
     })
  
   }

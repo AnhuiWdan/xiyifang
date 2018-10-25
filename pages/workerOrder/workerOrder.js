@@ -8,7 +8,6 @@ Page({
   /*** 页面的初始数据*/
   data: {
     rows: [],
-    row: [],
     Authorization: '',
     phoneNum: '',
     detail: false,
@@ -142,30 +141,16 @@ Page({
   },
   openDetail: function (event) {
     const index = event.currentTarget.dataset.index
-    const row = this.data.rows[index];
-    this.setData({
-      row: row,
-      detail: true
+    const id = this.data.rows[index].Id;
+    wx.navigateTo({
+      url: '../detail/detail?id='+id
     })
   },
   openLogistics: function (event) {
     const index = event.currentTarget.dataset.index
-    const row = this.data.rows[index];
-    this.setData({
-      row: row,
-      logistics: true
-    })
-  },
-  detailTap: function () {
-    this.setData({
-      detail: false,
-      row: {}
-    });
-  },
-  logisticsTap: function () {
-    this.setData({
-      logistics: false,
-      row: {}
+    const id = this.data.rows[index].Id;
+    wx.navigateTo({
+      url: '../logistics/logistics?id='+id
     })
   },
   toWash: function () {
@@ -236,6 +221,8 @@ Page({
       dataType: 'json',
       responseType: 'text',
       success: function (res) {
+        // 隐藏加载框
+        wx.hideLoading();
         // 回调函数
         var rows = that.data.rows;
 
@@ -253,11 +240,7 @@ Page({
         that.setData({
           rows: rows
         })
-        // 隐藏加载框
-        wx.hideLoading();
-      },
-      complete: function () {
-        wx.hideLoading()
+        
       }
     })
 

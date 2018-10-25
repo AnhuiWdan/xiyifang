@@ -1,9 +1,10 @@
 {
   "pages": [
-    "pages/pay/pay",
-    "pages/wash/wash",
-    "pages/logistics/logistics",
     "pages/login/login",
+    "pages/wash/wash",
+    "pages/detail/detail",
+    "pages/pay/pay",
+    "pages/logistics/logistics",
     "pages/worker/worker",
     "pages/order/order",  
     "pages/forget/forget",
