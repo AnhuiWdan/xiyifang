@@ -1,17 +1,17 @@
-<view class="main">
+<view class="main"  wx:if="msg.Status!==9">
     <view class="statu">
         <view class="clothes">
             <view class="clothes-class">
                 <view class="label">订单状态:</view>
-                <view class="clothe">已寄出</view>
+                <view class="clothe">{{msg.StatusTxt}}</view>
             </view>
             <view class="clothes-class">
                 <view class="label">订单编号:</view>
-                <view class="clothe">201810222222222131</view>
+                <view class="clothe">{{msg.IndentCode}}</view>
             </view>
             <view class="clothes-type">
                 <view class="label">下单时间:</view>
-                <view class="clothe">2018-10-22 23:20:10</view>
+                <view class="clothe">{{msg.StrTime}}</view>
             </view>
         </view>
     </view>
@@ -27,17 +27,17 @@
                 <block wx:for="{{clothes}}">
                 
                 </scroll-view> -->
-                <block>
+                <block wx:for="{{clothes}}">
                     <view class="clothes">
                         <view class="clothes-class">
                             <view class="label">衣服种类:</view>
-                            <view class="clothe">男装</view>
-                            <view class="price">￥20</view>
+                            <view class="clothe">{{item.ParentName}}</view>
+                            <view class="price">￥{{item.ClothesPrice}}</view>
                         </view>
                         <view class="clothes-type">
                             <view class="label">衣服类型:</view>
-                            <view class="clothe">皮大衣</view>
-                            <view class="number">x1</view>
+                            <view class="clothe">{{item.ClotherName}}</view>
+                            <view class="number">x{{item.Number}}</view>
                         </view>
                     </view>
                 </block>
@@ -50,7 +50,7 @@
                 订单总价:
                 <view class="price">
                     <text style="font-size: 30rpx">￥</text>
-                    120
+                    {{msg.TotalPrice}}
                 </view>
             </view>
             <!-- <view class="remark">
@@ -58,13 +58,10 @@
             </view> -->
         </view>
     </scroll-view>
-    <!-- <view class="pay">
-        <button class="btn">立即支付</button>
-    </view> -->
 </view>
 
 
-<view class="main" wx:if="{{false}}">
+<view class="main"  wx:if="msg.Status === 9">
     <view class="cancel">
         您的订单已取消
     </view>
@@ -72,15 +69,15 @@
         <view class="clothes">
             <view class="clothes-class">
                 <view class="label">订单状态:</view>
-                <view class="clothe red">已寄出</view>
+                <view class="clothe red">{{msg.StatusTxt}}</view>
             </view>
             <view class="clothes-class">
                 <view class="label">订单编号:</view>
-                <view class="clothe">201810222222222131</view>
+                <view class="clothe">{{msg.IndentCode}}</view>
             </view>
             <view class="clothes-type">
                 <view class="label">下单时间:</view>
-                <view class="clothe">2018-10-22 23:20:10</view>
+                <view class="clothe">{{msg.StrTime}}</view>
             </view>
         </view>
     </view>

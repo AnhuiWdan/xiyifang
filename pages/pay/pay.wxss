@@ -133,6 +133,7 @@ page {
     margin-top: 20rpx;
     padding: 8rpx 30rpx;
     background-color: #fff;
+    z-index: 10000;
 }
 .pay .btn{
     width: 100%;

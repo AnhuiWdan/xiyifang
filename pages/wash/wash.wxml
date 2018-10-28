@@ -26,7 +26,7 @@
                 <view class="cart-decrease">
                   <view class="inner iconfont icon-jian" style="font-size:48rpx;color:#00A0DC;" bindtap="minusCartCount" data-index="{{index}}"></view>
                 </view>
-                <view class="cart-count">{{item.cartCount}}</view>
+                <view class="cart-count">{{item.Number}}</view>
                 <view class="iconfont icon-jia cart-add " style="color:#00A0DC" bindtap="addCartCount" data-index="{{index}}"></view>
               </view>
             </view>
@@ -65,7 +65,7 @@
               <view class="shopcart-clothes">
                 <text class="name">{{item.Name}}</text>
                 <view class="price">
-                  <span>￥{{item.Price*item.cartCount}}</span>
+                  <span>￥{{item.Price*item.Number}}</span>
                 </view>
                 <!-- cartControl -->
                 <view class="cartControl-wrapper" style="bottom:20rpx;">
@@ -75,7 +75,7 @@
                         <view class="inner iconfont icon-jian" style="font-size:48rpx;color:#00A0DC;" bindtap="cartMinus" data-index="{{index}}"></view>
                       </view>
                       <view class="cart-count" style="display:inline-block;width:64rpx;text-align:center;font-size:30rpx;line-height:48rpx;margin-top:6rpx">
-                        {{item.cartCount}}
+                        {{item.Number}}
                       </view>
                       <view class=" iconfont icon-jia cart-add " style="vertical-align: top;margin-top: 4rpx;font-size:48rpx;color:#00A0DC; padding:0;" bindtap="cartAdd" data-index="{{index}}"></view>
                     </view>

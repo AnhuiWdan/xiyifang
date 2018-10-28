@@ -36,6 +36,7 @@
     line-height: 33rpx;
     font-size: 22rpx;
     text-align: center;
+    margin-top: -13rpx;
 }
 .path-center{
     flex: 0 0 40rpx;

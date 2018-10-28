@@ -37,7 +37,7 @@
     </view>
     <view class='bottom' wx:if="{{item.Status===0}}">
         <text class='fl' bindtap="pay" data-id="{{item.Id}}">支付</text>
-        <text class='fr blue' bindtap="toWash">修改</text>
+        <text class='fr blue' bindtap="toWash" data-id="{{item.Id}}">修改</text>
     </view>
     <view class='bottom' wx:if="{{item.Status===1}}">
         <text class='fl' bindtap="openDetail" data-index="{{index}}">详情</text>

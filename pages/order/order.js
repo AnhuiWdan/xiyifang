@@ -132,46 +132,55 @@ Page({
   // 扫一扫
   scan: function (event) {
     const app = getApp();
-    wx.showLoading({
-      title: '加载中...',
-      mask:true
-    });
     const that = this;
-    wx.scanCode({
-      success: (res) => {
-        wx.request({
-          url: `${URL}order/Flicking`,
-          data: {
-            "IndentCode": event.currentTarget.dataset.indentcode,
-            ...JSON.parse(res.result)
-          },
-          header: {
-            'content-type': 'application/json',
-            Authorization: app.globalData.Authorization
-          },
-          method: 'POST',
-          dataType: 'json',
-          responseType: 'text',
-          success: (res) => {
-            if (res.data.Code === 200) {
-              wx.showModal({
-                title: '开箱成功！',
-                showCancel: false
-              });
-              that.onLoad();
-            } else {
-              wx.showModal({
-                title: res.data.Message,
-                showCancel: false
+    wx.showModal({
+      title: '提示',
+      content: '是否确认开箱？',
+      success(result) {
+        if(result.confirm) {
+          wx.scanCode({
+            success: (res) => {
+              wx.request({
+                url: `${URL}order/Flicking`,
+                data: {
+                  IndentCode: event.currentTarget.dataset.indentcode,
+                  WechatPage: 'order',
+                  WechatFormId: app.globalData.formId,
+                  ...JSON.parse(res.result)
+                },
+                header: {
+                  'content-type': 'application/json',
+                  Authorization: app.globalData.Authorization
+                },
+                method: 'POST',
+                dataType: 'json',
+                responseType: 'text',
+                success: (res) => {
+                  if (res.data.Code === 200) {
+                    that.onLoad();
+                    wx.showModal({
+                      title: '开箱成功！',
+                      showCancel: false
+                    });
+                  } else {
+                    wx.showModal({
+                      title: res.data.Message,
+                      showCancel: false
+                    })
+                    return false
+                  }
+                }
               })
-              return false
-            }
-          }
-        })
-      },
-      fail: (rej) => {},
-      complete: ()=>{wx.hideLoading()}
+            },
+            fail: (rej) => {},
+            complete: ()=>{}
+          })
+        } else if(result.cancel) {
+          return;
+        }
+      }
     })
+    
   },
   openDetail: function(event) {
     console.log(event.currentTarget.dataset.index);
@@ -189,9 +198,9 @@ Page({
       url: '../logistics/logistics?id='+Id
     })
   },
-  toWash: function() {
+  toWash: function(event) {
     wx.navigateTo({
-      url: '../wash/wash'
+      url: '../wash/wash?id=' + event.currentTarget.dataset.id
     });
   },
   // 下拉刷新

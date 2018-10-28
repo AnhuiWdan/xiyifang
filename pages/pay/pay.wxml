@@ -15,12 +15,12 @@
                         <view class="clothes-class">
                             <view class="label">衣服种类:</view>
                             <view class="clothe">{{item.ParentName}}</view>
-                            <view class="price">￥{{item.cartCount*item.Price}}</view>
+                            <view class="price">￥{{item.Number*item.Price}}</view>
                         </view>
                         <view class="clothes-type">
                             <view class="label">衣服类型:</view>
                             <view class="clothe">{{item.Name}}</view>
-                            <view class="number">x{{item.cartCount}}</view>
+                            <view class="number">x{{item.Number}}</view>
                         </view>
                     </view>
                 </block>
@@ -44,6 +44,6 @@
         </view>
     </scroll-view>
     <view class="pay">
-        <button class="btn">立即支付</button>
+        <button class="btn" bindtap="pay">立即支付</button>
     </view>
 </view>

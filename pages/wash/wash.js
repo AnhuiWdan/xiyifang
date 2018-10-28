@@ -10,17 +10,20 @@ Page({
     clothesAll: [],
     clothesAllIndex: 0,
     checkedList: [],
+    changeList: [],
     noMenu: '',
     menuItme: 0,
     Authorization: '',
     ids: [],
     totalNum: 0,
-    totalPrice: 0
+    totalPrice: 0,
+    oldId: null
   },
 
 
-  onLoad: function (options) {
+  onLoad: function (option) {
     // 页面初始化 options为页面跳转所带来的参数
+    const oldId = option.id;
     wx.showLoading({
       title: '加载中...',
       mask: true
@@ -28,8 +31,49 @@ Page({
     const that = this;
     const app = getApp();
     this.setData({
-      Authorization: app.globalData.Authorization
+      Authorization: app.globalData.Authorization,
+      oldId: oldId
     })
+    app.globalData.Id = oldId;
+    // 是否为修改页面
+    if(oldId) {
+      wx.request({
+        url: `${URL}order/GetOrderDetails`,
+        data: {Id: oldId},
+        header: {
+          'content-type':'application/json',
+          Authorization: app.globalData.Authorization
+        },
+        method: 'POST',
+        dataType: 'json',
+        responseType: 'text',
+        success: (res)=>{
+          wx.hideLoading();
+          if(res.data.Code === 200) {
+            const checkedList = res.data.Data.Clotheslist;
+            checkedList.forEach(value=> {
+                value.Id = value.ClothesId;
+                value.Name = value.ClotherName;
+                value.Price = value.ClothesPrice
+            })
+            console.log(checkedList);
+            that.setData({
+              changeList: res.data.Data.Clotheslist,
+              checkedList: checkedList,
+              totalNum: checkedList.length,
+              totalPrice: res.data.Data.TotalPrice
+            })
+          } else {
+            wx.showToast({
+              title: res.data.Data,
+              duration: 2000,
+            })
+          }
+        }
+      });
+    }
+    
+    // 获取衣服类型
     wx.request({
       url: `${URL}order/GetClothesType`,
       header: {
@@ -49,6 +93,7 @@ Page({
               menus: res.data.Data.ParentList,
               ids: ids
             });
+            // 获取衣服种类
             wx.request({
               url: `${URL}order/GetChildeType`,
               data: { id: res.data.Data.ParentList[0].Id },
@@ -64,13 +109,24 @@ Page({
                   if (result.data.Data.ClothesList.length) {
                     const clothes = result.data.Data.ClothesList;
                     clothes.forEach(value => {
-                      value.cartCount = 0;
+                      value.Number = 0;
                       value.ParentName = res.data.Data.ParentList[0].Name
                     });
+                    // 如果是修改
+                    if(oldId) {
+                      const changeList = that.data.changeList;
+                      clothes.forEach(value1 => {
+                        changeList.forEach(value2 => {
+                          if(value1.Id === value2.ClothesId) {
+                            value1.Number = value2.Number;
+                          }
+                        })
+                      });
+                    }
                     clothesAll.push(clothes);
                     that.setData({
                       clothesList: clothes,
-                      clothesAll: clothesAll
+                      clothesAll: clothesAll,
                     });
                   }
 
@@ -146,9 +202,20 @@ Page({
               const clothes = result.data.Data.ClothesList;
               const ParentName = that.data.menus.find(value=>value.Id === id).Name;
               clothes.forEach(value => {
-                value.cartCount = 0;
+                value.Number = 0;
                 value.ParentName = ParentName
               });
+              // 如果是修改
+              if(that.data.oldId) {
+                const changeList = that.data.changeList;
+                clothes.forEach(value1 => {
+                  changeList.forEach(value2 => {
+                    if(value1.Id === value2.ClothesId) {
+                      value1.Number = value2.Number;
+                    }
+                  })
+                });
+              }
               clothesAll.push(clothes);
               that.setData({
                 clothesList: clothes,
@@ -180,10 +247,10 @@ Page({
     let checkedList = this.data.checkedList;
     let totalNum = this.data.totalNum;
     let totalPrice = this.data.totalPrice;
-    if (clothes[index].cartCount > 0) {
-      clothes[index].cartCount -= 1;
+    if (clothes[index].Number > 0) {
+      clothes[index].Number -= 1;
       const minusId = clothes[index].Id;
-      const thisCount = clothes[index].cartCount;
+      const thisCount = clothes[index].Number;
       for (let i = 0; i < checkedList.length; i++) {
         if (checkedList[i].Id === minusId && thisCount === 0) {
           checkedList.splice(i, 1);
@@ -193,7 +260,7 @@ Page({
       }
       totalPrice = 0;
       checkedList.forEach(value => {
-        totalPrice += value.cartCount*value.Price;
+        totalPrice += value.Number*value.Price;
       });
       clothesAll[clothesAllIndex] = clothes;
       if (totalNum > 0) {
@@ -222,7 +289,7 @@ Page({
     let a = false;
     let listIndex = -1;
 
-    clothes[index].cartCount += 1;
+    clothes[index].Number += 1;
    
     if(checkedList.length) {
       for (let i = 0; i < checkedList.length; i++) {
@@ -240,7 +307,7 @@ Page({
     }
     totalPrice = 0;
     checkedList.forEach(value => {
-      totalPrice += value.cartCount*value.Price;
+      totalPrice += value.Number*value.Price;
     });
     totalNum += 1;
     clothesAll[clothesAllIndex] = clothes;
@@ -263,26 +330,26 @@ Page({
     const clothesList = this.data.clothesList;
     const clothesAll = this.data.clothesAll;
     let totalNum = this.data.totalNum;
-    if (checkedList[index].cartCount > 1) {
-      checkedList[index].cartCount -= 1;
+    if (checkedList[index].Number > 1) {
+      checkedList[index].Number -= 1;
     } else {
       checkedList.splice(index, 1);
     }
     for (let i = 0; i < clothesList.length; i++) {
       if (clothesList[i].Id === minusId) {
-        clothesList[i].cartCount -= 1;
+        clothesList[i].Number -= 1;
       }
     }
     for (let a = 0; a < clothesAll.length; a++) {
       for(let b =0; b < clothesAll[a].length; b++) {
         if(clothesAll[a][b].Id === minusId) {
-          clothesAll[a][b].cartCount -= 1;
+          clothesAll[a][b].Number -= 1;
         }
       }
     }
     totalPrice = 0;
     checkedList.forEach(value => {
-      totalPrice += value.cartCount*value.Price;
+      totalPrice += value.Number*value.Price;
     });
     totalNum -= 1;
     if(totalNum === 0) {
@@ -307,22 +374,22 @@ Page({
     const clothesList = this.data.clothesList;
     const clothesAll = this.data.clothesAll;
     let totalNum = this.data.totalNum;
-    checkedList[index].cartCount += 1;
+    checkedList[index].Number += 1;
     for (let i = 0; i < clothesList.length; i++) {
       if (clothesList[i].Id === minusId) {
-        clothesList[i].cartCount += 1;
+        clothesList[i].Number += 1;
       }
     }
     for (let a = 0; a < clothesAll.length; a++) {
       for(let b =0; b < clothesAll[a].length; b++) {
         if(clothesAll[a][b].Id === minusId) {
-          clothesAll[a][b].cartCount += 1;
+          clothesAll[a][b].Number += 1;
         }
       }
     }
     totalPrice = 0;
     checkedList.forEach(value => {
-      totalPrice += value.cartCount*value.Price;
+      totalPrice += value.Number*value.Price;
     });
     totalNum += 1;
     this.setData({
@@ -338,11 +405,11 @@ Page({
     const clothesList = this.data.clothesList;
     const clothesAll = this.data.clothesAll;
     for (let i = 0; i < clothesList.length; i++) {
-      clothesList[i].cartCount = 0;
+      clothesList[i].Number = 0;
     }
     for (let a = 0; a < clothesAll.length; a++) {
       for(let b =0; b < clothesAll[a].length; b++) {
-        clothesAll[a][b].cartCount = 0;
+        clothesAll[a][b].Number = 0;
       }
     }
     this.setData({

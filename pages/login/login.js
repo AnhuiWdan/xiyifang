@@ -47,10 +47,11 @@ Page({
       verifyCode: e.detail.value 
     })
   },
-  loginClick:function(){
+  loginClick:function(e){
     //登录
     // console.log(this.data.text);
-    // console.log(this.data.verifyCode);
+    const app = getApp();
+    app.formId = e.detail.formId;
     var mobile = this.data.mobile;
     var psd = this.data.psd;
     var verifyCode = this.data.verifyCode.toUpperCase();

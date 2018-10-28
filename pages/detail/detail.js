@@ -2,6 +2,7 @@
 const {URL} = require('../../utils/http');
 Page({
     data: {
+        msg: {},
         clothes: [],
         Id: '',
         Authorization: ''
@@ -20,20 +21,21 @@ Page({
         Authorization: app.globalData.Authorization
       });
       wx.request({
-        url: `${URL}api/order/GetLogistics`,
+        url: `${URL}order/GetOrderDetails`,
         data: {Id: id},
         header: {
           'content-type':'application/json',
           Authorization: app.globalData.Authorization
         },
-        method: 'GET',
+        method: 'POST',
         dataType: 'json',
         responseType: 'text',
         success: (res)=>{
           wx.hideLoading();
           if(res.data.Code === 200) {
             that.setData({
-              clothes: res.data.Data
+              msg: res.data.Data,
+              clothes: res.data.Data.Clotheslist
             })
           } else {
             wx.showToast({

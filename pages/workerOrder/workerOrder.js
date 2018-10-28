@@ -94,63 +94,71 @@ Page({
     })
   },
   scan: function (event) {
-    wx.showLoading({
-      title: '加载中...',
-      mask: true
-    })
     const app = getApp();
     const that = this;
-    wx.scanCode({
-      success: (res) => {
-        wx.request({
-          url: `${URL}order/Flicking`,
-          data: {
-            "IndentCode": event.currentTarget.dataset.indentcode,
-            ...JSON.parse(res.result)
-          },
-          header: {
-            'content-type': 'application/json',
-            Authorization: app.globalData.Authorization
-          },
-          method: 'POST',
-          dataType: 'json',
-          responseType: 'text',
-          success: (res) => {
-            if (res.data.Code === 200) {
-              wx.showModal({
-                title: '开箱成功！',
-                showCancel: false
-              });
-            } else {
-              wx.showModal({
-                title: res.data.Message,
-                showCancel: false
+    wx.showModal({
+      title: '提示',
+      content: '是否确认开箱？',
+      success(result) {
+        if (result.confirm) {
+          wx.scanCode({
+            success: (res) => {
+              wx.request({
+                url: `${URL}order/Flicking`,
+                data: {
+                  "IndentCode": event.currentTarget.dataset.indentcode,
+                  WechatPage: 'workerOrder',
+                  WechatFormId: app.globalData.formId,
+                  ...JSON.parse(res.result)
+                },
+                header: {
+                  'content-type': 'application/json',
+                  Authorization: app.globalData.Authorization
+                },
+                method: 'POST',
+                dataType: 'json',
+                responseType: 'text',
+                success: (res) => {
+                  that.onLoad();
+                  if (res.data.Code === 200) {
+                    wx.showModal({
+                      title: '开箱成功！',
+                      showCancel: false
+                    });
+                  } else {
+                    wx.showModal({
+                      title: res.data.Message,
+                      showCancel: false
+                    })
+                    return false
+                  }
+                }
               })
-              return false
+            },
+            fail: () => {},
+            complete: function () {
+             
             }
-          }
-        })
-      },
-      fail: () => {
-      },
-      complete: function () {
-        wx.hideLoading();
-        that.onLoad();
+          })
+        } else if (result.cancel) {
+          return;
+        }
       }
     })
+
   },
   openDetail: function (event) {
     const index = event.currentTarget.dataset.index
     const id = this.data.rows[index].Id;
     wx.navigateTo({
-      url: '../detail/detail?id='+id
+      url: '../detail/detail?id=' + id
     })
   },
   openLogistics: function (event) {
     const index = event.currentTarget.dataset.index
     const id = this.data.rows[index].Id;
     wx.navigateTo({
-      url: '../logistics/logistics?id='+id
+      url: '../logistics/logistics?id=' + id
     })
   },
   toWash: function () {
@@ -180,9 +188,9 @@ Page({
         });
         wx.showToast({
           title: '已经是最新的了',
-          icon:'success',
+          icon: 'success',
           duration: 1500,
-          mask:true
+          mask: true
         });
         // 隐藏导航栏加载框
         wx.hideNavigationBarLoading();
@@ -240,7 +248,7 @@ Page({
         that.setData({
           rows: rows
         })
-        
+
       }
     })
 
