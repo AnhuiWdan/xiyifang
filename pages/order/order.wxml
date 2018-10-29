@@ -1,6 +1,16 @@
 <!-- pages/order/order.wxml -->
 <image class="banner" src="../../images/banner.png" mode="aspectFit|aspectFill|widthFix" lazy-load="false"></image>
-<view class='list' wx:for="{{rows}}" wx:key="index">
+<view class='filtrate '>
+    <input class='' placeholder='订单号搜索' bindinput='inputSearch' value='{{inputValue}}' />
+    <button class='' bindtap='clickSearch'>搜索</button>
+    <picker class='' bindchange="bindPickerChange" value="{{index}}" range="{{statusValue}}">
+      <view class="picker">
+        {{searchStatus}}
+      </view>
+    </picker>
+</view>
+
+<view class='list' wx:for="{{rows}}" wx:key="index"> 
     <view class='top'>
         <image class="smallLogo" src="../../images/logo.png" mode="aspectFit|aspectFill|widthFix" lazy-load="false"></image>
         <text>订单号</text>

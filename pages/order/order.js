@@ -8,7 +8,6 @@ const DATA = {
   Status: -1
 }
 Page({
-
   /*** 页面的初始数据*/
   data: {
     rows: [],
@@ -20,7 +19,25 @@ Page({
       page: 1,
       rows: 10,
       Status: -1
-    }
+    },
+    inputValue:'',
+    inputSearch:'',
+    statusValue:[
+      '所有',
+      '未支付',
+      '已支付',
+      '已寄',
+      '已取',
+      '正在派送',
+      '派送成功',
+      '已签收',
+      '工人拒收',
+      '退款',
+      '已退款',
+      '已派'
+    ],
+    index:0,
+    searchStatus:'状态筛选'
   },
   /*** 生命周期函数--监听页面加载*/
   onLoad: function (options) {
@@ -288,5 +305,93 @@ Page({
       }
     })
  
-  }
+  },
+  // 订单号搜索
+  inputSearch: function (e) {
+    //密码
+    this.setData({
+      inputSearch: e.detail.value
+    })
+  },
+  clickSearch:function(){
+    console.log(this.data.inputSearch)
+    const app = getApp();
+    const that = this;
+    wx.request({
+      url: `${URL}order/GetOrderList`,
+      data: {
+        page:1,
+        rows:10,
+        IndentCode:this.data.inputSearch,
+        Status:-1
+      },
+      header: {
+        'content-type': 'application/json',
+        Authorization: app.globalData.Authorization
+      },
+      method: 'POST',
+      dataType: 'json',
+      responseType: 'text',
+      success: (res) => {
+        wx.hideLoading();
+        if (res.data.Code == 200) {
+          console.log(res.data.Data);
+          that.setData({
+            searchStatus:'状态筛选',
+            rows: res.data.Data.rows,
+          })
+        } else {
+          wx.showModal({
+            title: res.data.Message,
+            showCancel: false
+          })
+          return false;
+        }
+      },
+      fail: () => { },
+      complete: () => { wx.hideLoading() }
+    });
+  },
+//状态筛选
+  bindPickerChange: function (e) {
+    const app = getApp();
+    const that = this;
+    const sssPage = 'formData.page'
+    const sssStatus = 'formData.Status';
+    that.setData({
+      inputValue:'',
+      index: e.detail.value,
+      [sssPage]:1,
+      [sssStatus]: e.detail.value-1,
+      searchStatus: that.data.statusValue[e.detail.value]
+    })
+    // console.log(that.data.formData)
+    wx.request({
+      url: `${URL}order/GetOrderList`,
+      data: this.data.formData,
+      header: {
+        'content-type': 'application/json',
+        Authorization: app.globalData.Authorization
+      },
+      method: 'POST',
+      dataType: 'json',
+      responseType: 'text',
+      success: (res) => {
+        wx.hideLoading();
+        if (res.data.Code == 200) {
+          that.setData({
+            rows: res.data.Data.rows,
+          })
+        } else {
+          wx.showModal({
+            title: res.data.Message,
+            showCancel: false
+          })
+          return false;
+        }
+      },
+      fail: () => { },
+      complete: () => { wx.hideLoading() }
+    });
+  },
 })

@@ -9,6 +9,54 @@ page{
   height: 314rpx;
 }
 
+/* 搜索 */
+.filtrate{
+  display: flex;
+  margin:0 10rpx;
+}
+.filtrate input{
+  width: 50%;
+  background-color:#fff; 
+}
+.filtrate button,.filtrate picker{
+  width: 25%;
+  height: 80rpx;
+  line-height: 80rpx;
+  text-align: center;
+  margin-top:20rpx;
+  border: 1rpx solid #ddd;
+  border-left: 0;
+  border-radius: 0;
+  padding:5rpx 5rpx 5rpx 10rpx;
+  box-sizing:content-box;
+  -moz-box-sizing:content-box; /* Firefox */
+  -webkit-box-sizing:content-box; /* Safari */
+  background-color: #fff;
+}
+.filtrate button{
+  background-color: #1890ff;
+  color: #fff;
+  border-color: #1890ff;
+}
+.filtrate button::after {
+    border-radius: 0;
+}
+.filtrate picker{
+  position: relative
+}
+.filtrate picker::after{
+    position: absolute;
+    right: 10rpx;
+    top: 40rpx;
+    content: '';
+    width:0;
+    height:0;
+    border:10rpx solid black;
+    border-top-color:black;
+    border-bottom-color:transparent;
+    border-right-color:transparent;
+    border-left-color:transparent;
+}
 .list{
   box-sizing:border-box;
   -moz-box-sizing:border-box; /* Firefox */
