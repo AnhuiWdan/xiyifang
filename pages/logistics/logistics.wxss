@@ -53,13 +53,12 @@
     border-radius: 50%;
 }
 .path-center .line {
-    flex: 1;
-    height: 100%;
-    width: 1rpx;
+    height: 146rpx;
+    width: 1px;
     margin-left: 50%;
     margin-top: 4rpx;
     transform: translateX(-50%);
-    border-left: 1rpx solid #ddd;
+    border-left: 1px solid #ddd;
 }
 .path-right{
     color: #666;

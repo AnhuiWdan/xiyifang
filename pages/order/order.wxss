@@ -12,7 +12,6 @@ page{
 /* 搜索 */
 .filtrate{
   display: flex;
-  margin:0 10rpx;
 }
 .filtrate input{
   width: 50%;
@@ -29,8 +28,6 @@ page{
   border-radius: 0;
   padding:5rpx 5rpx 5rpx 10rpx;
   box-sizing:content-box;
-  -moz-box-sizing:content-box; /* Firefox */
-  -webkit-box-sizing:content-box; /* Safari */
   background-color: #fff;
 }
 .filtrate button{
