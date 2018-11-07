@@ -174,3 +174,19 @@ page{
   color: #666;
   font-size: 30rpx;
 }
+
+.modal{
+  display: none;
+}
+.show {
+  display: block;
+}
+.canvas {
+  position: absolute;
+  left: 50%;
+  top: 30%;
+  width: 200px;
+  height: 200px;
+  overflow: hidden;
+  transform: translateX(-50%);
+}

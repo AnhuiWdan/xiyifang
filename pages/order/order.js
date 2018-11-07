@@ -6,7 +6,9 @@ const DATA = {
   page: 1,
   rows: 10,
   Status: -1
-}
+};
+var QRCode = require('../../utils/weapp-qrcode.js');
+var qrcode;
 Page({
   /*** 页面的初始数据*/
   data: {
@@ -37,7 +39,8 @@ Page({
       '已派'
     ],
     index:0,
-    searchStatus:'状态筛选'
+    searchStatus:'状态筛选',
+    showModal: false
   },
   /*** 生命周期函数--监听页面加载*/
   onLoad: function (options) {
@@ -49,6 +52,14 @@ Page({
       });
       return;
     }
+    qrcode = new QRCode('canvas', {
+      text: "0000000000000",
+      width: 200,
+      height: 200,
+      colorDark: "#000000",
+      colorLight: "#ffffff",
+      correctLevel: QRCode.CorrectLevel.H,
+    });
     this.setData({
       phoneNum: app.globalData.phoneNum,
       Authorization: app.globalData.Authorization
@@ -147,57 +158,69 @@ Page({
     })
   },
   // 扫一扫
-  scan: function (event) {
-    const app = getApp();
-    const that = this;
-    wx.showModal({
-      title: '提示',
-      content: '是否确认开箱？',
-      success(result) {
-        if(result.confirm) {
-          wx.scanCode({
-            success: (res) => {
-              wx.request({
-                url: `${URL}order/Flicking`,
-                data: {
-                  IndentCode: event.currentTarget.dataset.indentcode,
-                  WechatPage: 'order',
-                  WechatFormId: app.globalData.formId,
-                  ...JSON.parse(res.result)
-                },
-                header: {
-                  'content-type': 'application/json',
-                  Authorization: app.globalData.Authorization
-                },
-                method: 'POST',
-                dataType: 'json',
-                responseType: 'text',
-                success: (res) => {
-                  if (res.data.Code === 200) {
-                    that.onLoad();
-                    wx.showModal({
-                      title: '开箱成功！',
-                      showCancel: false
-                    });
-                  } else {
-                    wx.showModal({
-                      title: res.data.Message,
-                      showCancel: false
-                    })
-                    return false
-                  }
-                }
-              })
-            },
-            fail: (rej) => {},
-            complete: ()=>{}
-          })
-        } else if(result.cancel) {
-          return;
-        }
-      }
-    })
+  scan: function (e) {
+    this.setData({
+      showModal: true
+    });
+    qrcode.makeCode(e.currentTarget.dataset.indentcode+ '_' + this.data.phoneNum); 
+
+    // wx.showModal({
+    //   title: '提示',
+    //   content: '是否确认开箱？',
+    //   success(result) {
+    //     if(result.confirm) {
+    //       wx.scanCode({
+    //         success: (res) => {
+    //           wx.request({
+    //             url: `${URL}order/Flicking`,
+    //             data: {
+    //               IndentCode: event.currentTarget.dataset.indentcode,
+    //               WechatPage: 'order',
+    //               WechatFormId: app.globalData.formId,
+    //               ...JSON.parse(res.result)
+    //             },
+    //             header: {
+    //               'content-type': 'application/json',
+    //               Authorization: app.globalData.Authorization
+    //             },
+    //             method: 'POST',
+    //             dataType: 'json',
+    //             responseType: 'text',
+    //             success: (res) => {
+    //               if (res.data.Code === 200) {
+    //                 that.onLoad();
+    //                 wx.showModal({
+    //                   title: '开箱成功！',
+    //                   showCancel: false
+    //                 });
+    //               } else {
+    //                 wx.showModal({
+    //                   title: res.data.Message,
+    //                   showCancel: false
+    //                 })
+    //                 return false
+    //               }
+    //             }
+    //           })
+    //         },
+    //         fail: (rej) => {},
+    //         complete: ()=>{}
+    //       })
+    //     } else if(result.cancel) {
+    //       return;
+    //     }
+    //   }
+    // })
     
+  },
+  // 关闭弹框
+  closeModal: function(e){
+    if(e.target.id === 'canvasBox') {
+      return;
+    }
+    this.setData({
+      showModal: false
+    });
   },
   openDetail: function(event) {
     console.log(event.currentTarget.dataset.index);

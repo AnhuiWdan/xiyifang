@@ -51,12 +51,12 @@
     </view>
     <view class='bottom' wx:if="{{item.Status===2}}">
         <text class='fl' bindtap="openDetail" data-index="{{index}}">详情</text>
-        <text class="fr blue" bindtap="scan" data-indentCode="{{item.IndentCode}}">扫一扫</text>
+        <text class="fr blue" bindtap="scan" data-indentCode="W{{item.IndentCode}}">扫一扫</text>
     </view>
     <view class='bottom' wx:if="{{item.Status===3}}">
         <text class='fl' bindtap="openDetail" data-index="{{index}}">详情</text>
         <text class='fl'>拒收</text>
-        <text class="fr blue" bindtap="scan" data-indentCode="{{item.IndentCode}}">扫一扫</text>
+        <text class="fr blue" bindtap="scan" data-indentCode="W{{item.IndentCode}}">扫一扫</text>
     </view>
     <view class='bottom' wx:if="{{item.Status===4}}">
         <text class='fl' bindtap="openDetail" data-index="{{index}}">详情</text>
@@ -77,6 +77,7 @@
     </view>
     <view class='bottom' wx:if="{{item.Status===8}}">
         <text class='fl blue'  bindtap="openDetail" data-index="{{index}}">详情</text>
+         <!-- <text class='fr blue' bindtap="scan" data-indentCode="O{{item.IndentCode}}">扫一扫</text> -->
     </view>
      <view class='bottom' wx:if="{{item.Status===9}}">
         <text class='fl' bindtap="openDetail" data-index="{{index}}">详情</text>
@@ -85,8 +86,14 @@
      <view class='bottom' wx:if="{{item.Status===10}}">
         <text class='fl' bindtap="openDetail" data-index="{{index}}">详情</text>
          <text class='fl'>拒收</text>
-         <text class='fr blue' bindtap="scan" data-indentCode="{{item.IndentCode}}">扫一扫</text>
+         <text class='fr blue' bindtap="scan" data-indentCode="W{{item.IndentCode}}">扫一扫</text>
     </view>
 </view>
 <!-- <view class='more'>查看更多订单</view> -->
 <view class='notRows' wx:if="{{!rows.length}}">暂无订单</view>
+
+<view class="modal  {{ showModal ? 'show': ''}}" bindtap="closeModal">
+    <view class='canvas'>
+        <canvas style="width: 200px;height:200px"  id="canvasBox" canvas-id='canvas'></canvas>
+    </view>
+</view>
