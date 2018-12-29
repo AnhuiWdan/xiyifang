@@ -56,7 +56,6 @@ Page({
                 value.Name = value.ClotherName;
                 value.Price = value.ClothesPrice
             })
-            console.log(checkedList);
             that.setData({
               changeList: res.data.Data.Clotheslist,
               checkedList: checkedList,
@@ -67,6 +66,7 @@ Page({
             wx.showToast({
               title: res.data.Data,
               duration: 2000,
+              mask:true,
             })
           }
         }
@@ -147,9 +147,7 @@ Page({
         }
       },
       fail: () => { },
-      complete: () => {
-        wx.hideLoading();
-      }
+      complete: () => {wx.hideLoading();}
     });
   },
   toggleList: function () {
@@ -424,73 +422,83 @@ Page({
   // 支付
   pay: function() {
     const list = this.data.checkedList;
+    const app = getApp();
     const clothesList = this.data.checkedList.map(value => {
       value.ParentId
     })
-    wx.navigateTo({
-      url: '../pay/pay?list='+ JSON.stringify(list)
-    });
-
-
-    // wx.showLoading({
-    //   title: '正在支付',
-    //   mask: true
-    // });
-    // wx.request({
-    //   url: `${URL}order/SaveOrder`,
-    //   data: {
-    //     StudentRemark: '',
-    //     UserId: '',
-    //     clotheslist: this.data.checkedList
-    //   },
-    //   header: {
-    //     'content-type': 'application/json',
-    //     Authorization: this.data.Authorization
-    //   },
-    //   method: 'POST',
-    //   dataType: 'json',
-    //   responseType: 'text',
-    //   success: function(res) {
-        
-    //     if (res.data.Code == 200) {
-    //       wx.showToast({
-    //         title: '支付成功',
-    //         icon: 'succes',
-    //         duration: 20000,
-    //         success: function() {
-    //           setTimeout(function () {
-    //             wx.redirectTo({
-    //               url: '../order/order'
-    //             });
-    //           }, 2000);  
+    console.log(app.globalData.Authorization)
+    wx.request({
+      url: `${URL}order/SaveOrder`,
+      data: {
+        StudentRemark: '',
+        UserId: '',
+        Id: app.globalData.Id,
+        clotheslist: list
+      },
+      header: {
+        'content-type': 'application/json',
+        Authorization: app.globalData.Authorization
+      },
+      method: 'POST',
+      dataType: 'json',
+      responseType: 'text',
+      success: function(res) {
+        app.globalData.Id = '';
+        if (res.data.Code == 200) {
+          app.globalData.IndentCode = res.data.Data;
+          wx.showToast({
+            title: '下单成功',
+            icon: 'succes',
+            duration: 20000,
+            mask:true,
+            success: function() {
+              setTimeout(function () {
+                wx.navigateTo({
+                  url: '../pay/pay?list='+ JSON.stringify(list)
+                });
+                wx.hideToast();
+              }, 2000);  
               
-    //         }
-    //       });
+            }
+          });
          
-    //     } else {
-    //       if(res.data.Message === '身份认证失败。') {
-    //         wx.showToast({
-    //           title: res.data.Message,
-    //           icon: 'none',
-    //           duration: 2500,
-    //           success: function() {
-    //             setTimeout(function () {
-    //               wx.redirectTo({
-    //                 url: '../login/login'
-    //               });
-    //             }, 2500);
-    //           }
-    //         });
+        } else {
+          if(res.data.Message === '身份认证失败。') {
+            wx.showToast({
+              title: res.data.Message,
+              icon: 'none',
+              duration: 2500,
+              mask:true,
+              success: function() {
+                setTimeout(function () {
+                  wx.redirectTo({
+                    url: '../login/login'
+                  });
+                  wx.hideToast();
+                }, 2500);
+              }
+            });
             
-    //       } else {
-    //         wx.showModal({
-    //           title: res.data.Message,
-    //           showCancel: false
-    //         });
-    //         return false;
-    //       }
-    //     }
-    //   }
-    // })
+          } else {
+            // wx.navigateTo({
+            //   url: '../pay/pay?list=' + JSON.stringify(list)
+            // });
+            console.log(res)
+            wx.showModal({
+              title: res.data.Message,
+              showCancel: false
+            });
+            return false;
+          }
+        }
+      },
+      complete: function() {
+        app.globalData.Id = '';
+      }
+    });
+    
+
+
+    
   },
 })

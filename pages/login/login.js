@@ -1,6 +1,7 @@
 //index.js
 //获取应用实例
 const app = getApp();
+const { URL } = require('../../utils/http');
 var ctx;
 Page({
   data: {
@@ -14,11 +15,13 @@ Page({
   //事件处理函数
   onLoad: function () {
     var that = this;
+    var app = getApp();
     wx.login({
-      success:function(res){
+      success(res) {
+        app.globalData.OpenId = res.code;
         that.setData({
           code: res.code
-        })
+        });
       }
     })
     drawPic(that);
@@ -27,7 +30,6 @@ Page({
   change: function () {
     var that = this;
     drawPic(that);
-    console.log(this.data.text)
   },
   inputMobile:function(e){
     //手机号码
@@ -49,7 +51,6 @@ Page({
   },
   loginClick:function(e){
     //登录
-    // console.log(this.data.text);
     const app = getApp();
     app.formId = e.detail.formId;
     var mobile = this.data.mobile;
@@ -87,6 +88,7 @@ Page({
         title: '验证码有误！',
         showCancel: false
       })
+      drawPic(this);
       return false
     }else {
       const that = this;
@@ -95,25 +97,25 @@ Page({
         mask: true
       })
       wx.request({
-        url: 'https://xwxapi.itknow.cn/api/AccountManage/UserLogin',
-        data:{
-          UserName:mobile,
-          Password:psd,
-          OpenId:this.data.code
+        url: `${URL}AccountManage/UserLogin`,
+        data: {
+          UserName: mobile,
+          Password: psd,
+          OpenId: that.data.code
         },
         header: {
           'content-type': 'application/json'
         },
         method: 'post',
-        success:function(res){
+        success: function (res) {
           wx.hideLoading();
           that.onLoad();
-          if(res.data.Code == 200){
+          if (res.data.Code == 200) {
             var app = getApp();
             app.globalData.Authorization = res.data.Data;
             app.globalData.phoneNum = that.data.mobile;
             wx.request({
-              url: 'https://xwxapi.itknow.cn/api/AccountInfo/GetUserInfo',
+              url: `${URL}AccountInfo/GetUserInfo`,
               header: {
                 'content-type': 'application/json',
                 Authorization: app.globalData.Authorization
@@ -121,8 +123,8 @@ Page({
               method: 'post',
               dataType: 'json',
               responseType: 'text',
-              success: function(result) {
-                if(result.data.Code === 200 && result.data.Data.LoginType === 2) {
+              success: function (result) {
+                if (result.data.Code === 200 && result.data.Data.LoginType === 2) {
                   wx.redirectTo({
                     url: '../worker/worker',
                   })
@@ -133,12 +135,8 @@ Page({
                 }
               }
             })
-              
 
-
-
-           
-          }else{
+          } else {
             wx.showModal({
               title: res.data.Message,
               showCancel: false
@@ -146,11 +144,10 @@ Page({
             return false
           }
         },
-        complete: function() {wx.hideLoading()}
+        complete: function () { wx.hideLoading() }
 
       })
     }
-
   },
   registerClick:function(){
     wx.navigateTo({

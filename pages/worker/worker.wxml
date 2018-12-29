@@ -32,7 +32,7 @@
       修改密码
     </view>
   </view>
-  <view class='logout'>
+  <!-- <view class='logout'>
     <button bindtap='logoutClick'>退出</button>
-  </view>
+  </view> -->
 </view>

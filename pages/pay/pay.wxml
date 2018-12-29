@@ -15,11 +15,11 @@
                         <view class="clothes-class">
                             <view class="label">衣服种类:</view>
                             <view class="clothe">{{item.ParentName}}</view>
-                            <view class="price">￥{{item.Number*item.Price}}</view>
+                            <view class="price">￥{{item.Number*(item.Price||item.ClothesPrice)}}</view>
                         </view>
                         <view class="clothes-type">
                             <view class="label">衣服类型:</view>
-                            <view class="clothe">{{item.Name}}</view>
+                            <view class="clothe">{{item.Name||item.ClotherName}}</view>
                             <view class="number">x{{item.Number}}</view>
                         </view>
                     </view>
@@ -38,12 +38,22 @@
                     {{totalPrice}}
                 </view>
             </view>
-            <view class="remark">
-                <textarea class="textArea" placeholder="请填写其他备注信息，以便为您带来更优质的服务~" maxlength="-1"></textarea>
+            <view class='cabinetBox'>
+              <view class='cabinet'>
+                <view>选择机柜：</view>
+                <view class='cabinetNum'>
+                  <button size='mini' wx:for='{{cabinetList}}' bindtap='selCabinet' id='{{item.id}}' type='{{item.type}}' data-index='{{item.index}}'>{{item.name}}</button>
+                </view>
+              </view>
             </view>
+            <view class="remark">
+                <textarea class="textArea" bindinput="input" value="{{StudentRemark}}" placeholder="请填写其他备注信息，以便为您带来更优质的服务~" maxlength="-1"></textarea>
+            </view>
+            
         </view>
     </scroll-view>
     <view class="pay">
-        <button class="btn" bindtap="pay">立即支付</button>
+      <button class="btn" wx:if='{{siteNum == 0}}' disabled='true'>立即支付</button>
+        <button class="btn" wx:else bindtap="pay">立即支付</button>
     </view>
 </view>

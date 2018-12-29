@@ -1,5 +1,6 @@
 // pages/register/register.js
 const app = getApp()
+const { URL } = require('../../utils/http');
 Page({
 
   /*** 页面的初始数据*/
@@ -50,7 +51,6 @@ Page({
   getCode:function(){
     var interval = null ;
     var that = this;
-    console.log(that.data.mobile);
     if (that.data.mobile == ''){
       wx.showModal({
         title: '手机号不能为空！',
@@ -69,7 +69,7 @@ Page({
          mask: true
        });
       wx.request({
-        url: 'https://xwxapi.itknow.cn/api/AccountManage/SendAuthCode',
+        url: `${URL}AccountManage/SendAuthCode`,
         data:{
           UserName: that.data.mobile
         },
@@ -153,7 +153,7 @@ Page({
         mask: true
       });
       wx.request({
-        url: 'https://xwxapi.itknow.cn/api/AccountManage/RetrievePassword',
+        url: `${URL}AccountManage/RetrievePassword`,
         data:{
           UserName:mobile,
           Password:psd,
@@ -169,7 +169,7 @@ Page({
             wx.showToast({
               title: '修改成功',
               icon:'success',
-              duration:20000,
+              duration:2000,
               mask:true,
               success: function() {
                 setTimeout(function () {
@@ -188,8 +188,15 @@ Page({
             return false
           }
         },
-        fail: () => { wx.hideLoading() },
-        complete: () => { wx.hideLoading() }
+        fail: () => { 
+          wx.showToast({
+            title: '修改失败',
+            icon: 'none',
+            duration: 2000,
+            mask:true,
+          })
+         },
+        // complete: () => { wx.hideLoading() }
       })
     }
   }

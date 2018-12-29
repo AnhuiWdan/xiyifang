@@ -35,4 +35,5 @@
   <view class='logout'>
     <button bindtap='logoutClick'>退出</button>
   </view>
+
 </view>

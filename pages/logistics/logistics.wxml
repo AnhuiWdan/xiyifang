@@ -10,7 +10,7 @@
         </view>
         <view class="topList">
             <text class="label">物流来源:</text>
-            <text class="msg">小浣熊洗衣</text>
+            <text class="msg">小浣熊洗衣科技</text>
         </view>
     </view>
     <view class="path">

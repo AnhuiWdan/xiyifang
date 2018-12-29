@@ -1,40 +1,83 @@
 // pages/index/index.js
 const {URL} = require('../../utils/http');
+// const app = getApp();
+// console.log(app.globalData)
 Page({
 
   /*** 页面的初始数据*/
   data: {
     isLogin: false,
     phoneNum: '',
-    isStu: true
+    isStu: true,
+    
   },
   onLoad() {
+    wx.showLoading({
+      title: '加载中',
+      mask:true
+    })
     // 逻辑判断是否已经登录
+    const that = this;
     const app = getApp();
-    if(!!app.globalData.Authorization) {
-      this.setData({
-        isLogin: true,
-        phoneNum: app.globalData.phoneNum
-      })
-    }
+    wx.login({
+      success: function (res) {
+        app.globalData.OpenId = res.code;
+        that.setData({
+          code: res.code
+        });
+        wx.request({
+          url: `${URL}AccountManage/VerifyLogin`,
+          data: {
+            WechatCode: that.data.code
+          },
+          method: 'post',
+          success: function (res) {
+            // console.log(res.data);
+            if (res.data.Code == 200) {
+              // console.log(res.data);
+              app.globalData.Authorization = res.data.Data.Authorization;
+              app.globalData.phoneNum = res.data.Data.UserName;
+              app.globalData.UserId = res.data.Data.UserId;
+              if (res.data.Data.LoginType === 2) {
+                wx.redirectTo({
+                  url: '../worker/worker',
+                })
+              } 
+              else {
+                that.setData({
+                  isLogin: true,
+                  phoneNum: app.globalData.phoneNum
+                })
+                setTimeout(function () {
+                  wx.hideLoading()
+                }, 10)
+              }
+            }else{
+              wx.redirectTo({
+                url: '../login/login',
+              })
+            }
+          }
+        })
+      }
+    })
+    // if(!!app.globalData.Authorization) {
+    //   this.setData({
+    //     isLogin: true,
+    //     phoneNum: app.globalData.phoneNum
+    //   })
+    // }
   },
   scan() {
     wx.scanCode({
       success: (res)=> {
-        console.log(res);
-        console.log(res.result);
+       
       },
       fail: (rej)=> {
-        console.log(rej);
+        
       }
     })
   },
-  // mineClick: function () {
-  //   //跳转个人中心
-  //   wx.navigateTo({
-  //     url: '../mine/mine',
-  //   })
-  // },
   washClick: function () {
     if(!this.data.isLogin) {
       wx.navigateTo({
@@ -56,7 +99,7 @@ Page({
     } else{
        //跳转我的订单
       wx.navigateTo({
-        url: '../order/order',
+        url: '../order/order?id=1',
       })
     }
     
@@ -77,15 +120,29 @@ Page({
   },
   //退出按钮，进入登录页
   logoutClick:function(){
+    const that = this;
     const app = getApp();
-    app.globalData.Authorization = '';
-    app.globalData.phoneNum = '';
-    wx.redirectTo({
-      url: '../login/login'
-    });
-    this.setData({
-      isLogin: false,
-      phoneNum: ''
+    wx.request({
+      url: `${URL}AccountInfo/LoginOut`,
+      header: {
+        'content-type': 'application/json',
+        Authorization: app.globalData.Authorization
+      },
+      method:'post',
+      success:function(res){
+        app.globalData.Authorization = '';
+        app.globalData.phoneNum = '';
+        that.setData({
+          isLogin: false,
+          phoneNum: ''
+        })
+        wx.redirectTo({
+          url: '../login/login'
+        });
+        
+      }
     })
   }
+
+  
 })

@@ -8,6 +8,22 @@ page {
     flex-direction: column;
     height: 100%;
 }
+.statu{
+    flex: 0 0 172rpx;
+    box-sizing: border-box;
+    border-top: 1rpx solid #ddd;
+    padding: 0 30rpx;
+    margin-bottom: 20rpx;
+    background-color: #fff;
+    font-size: 26rpx;
+}
+.statu .clothes {
+    border-bottom: none;
+}
+.statu .clothes .label{
+    flex: 0 0 120rpx;
+}
+
 .header {
     flex: 0 0 80rpx;
     display: flex;
@@ -15,7 +31,6 @@ page {
     line-height: 40rpx;
     padding: 20rpx 30rpx;
     background-color: #fff;
-    border-top: 1rpx solid #ddd;
     border-bottom: 1rpx solid #ddd;
     font-size: 26rpx;
 }
@@ -124,7 +139,7 @@ page {
 .remark .textArea {
     width: 100%;
 }
-.pay {
+/* .pay {
     box-sizing: border-box;
     position: fixed;
     bottom: 0;
@@ -133,7 +148,6 @@ page {
     margin-top: 20rpx;
     padding: 8rpx 30rpx;
     background-color: #fff;
-    z-index: 10000;
 }
 .pay .btn{
     width: 100%;
@@ -144,19 +158,94 @@ page {
     margin: 0;
     border-radius: 50rpx; 
     background-color: #018ff2;
+} */
+.cancel{
+    flex: 0 0 64rpx;
+    padding: 0 30rpx;
+    line-height: 64rpx;
+    border-top: 1rpx solid #ddd;
+    background-color: #fff;
+}
+.red{
+    color: red!important;
 }
 
-
-/* 选择机柜开始 */
-.cabinetBox{
- background-color:#fff;
+.rejection {
+    box-sizing: border-box;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 110rpx;
+    margin-top: 20rpx;
+    padding: 8rpx 30rpx;
+    background-color: #fff;
+    z-index: 10000;
 }
-.cabinet{
-  margin:0 35rpx;
-  padding-top: 35rpx;
-  border-top: 1rpx solid #ddd;
+.rejection{
+  display: -webkit-flex;
+  display: flex;
 }
-.cabinetNum button{
-  margin-right:10rpx; 
+.rejection .btn{
+    flex: 1;
+    height: 100%;
+    text-align: center;
+    color: #fff;
+    font-size: 32rpx;
+    line-height: 100rpx;
+    margin: 0;
+    background-color: #018ff2;
 }
-/* 选择机柜结束 */
+.rejection .btnCancel{
+  background-color: #ccc
+}
+.modal{
+  display: none;
+}
+.show {
+  display: block;
+  z-index: 99999;
+}
+.canvas {
+  position: absolute;
+  left: 50%;
+  top: 30%;
+  width: 600rpx;
+  height: 600rpx;
+  overflow: hidden;
+  transform: translateX(-50%);
+  background-color: #fff;
+}
+.canvas .openCode{
+  height: 92rpx;
+  line-height: 92rpx;
+  padding: 0 20rpx;
+  background-color: #f5f5f5;
+  /* font-size: 24rpx; */
+}
+.canvas .openCode image{
+  width: 92rpx;
+  height: 92rpx;
+  position: absolute;
+  right: 0rpx;
+  top: 0;
+}
+#canvasBox{
+  position: absolute;
+  top: 120rpx;
+  left: 50%;
+  margin-left: -195rpx;
+}
+.canvas .logo{
+  width: 100rpx;
+  height: 100rpx;
+  position: absolute;
+  left: 50%;
+  top: 265rpx;
+  margin-left: -50rpx;
+  background-color: #fff;
+  border-radius: 50%;
+}
+.canvas .logo image{
+  width: 100%;
+  height: 100%;
+}

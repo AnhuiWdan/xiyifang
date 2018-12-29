@@ -37,10 +37,12 @@ Page({
               msg: res.data.Data,
               clothes: res.data.Data.Clotheslist
             })
+            // console.log(res.data.Data)
           } else {
             wx.showToast({
               title: res.data.Data,
               duration: 2000,
+              mask:true,
             })
           }
         }

@@ -15,8 +15,9 @@
       </view>
     </view>
     <view>
+      <!-- <button class='login active'>登录</button> -->
       <button class='login' wx:if="{{!(!!mobile && !!psd && !!verifyCode)}}">登录</button>
-      <button class='login active'  formType="submit" wx:else>登录</button>
+      <button class='login active'  bindtap='loginClick' wx:else>登录</button>
       <view class="" hover-class="none" hover-stop-propagation="false">
         <view class="forget" bindtap="toForget">忘记密码</view>
         <view class="registerText">

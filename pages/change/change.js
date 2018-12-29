@@ -45,6 +45,12 @@ Page({
         showCancel: false
       })
       return false
+    } else if (new1.length < 6 || new1.length > 32) {
+      wx.showModal({
+        title: '密码长度有误(6-32)！',
+        showCancel: false
+      })
+      return false
     } else if (new2 != new1) {
       wx.showModal({
         title: '新密码不一致！',
@@ -78,6 +84,7 @@ Page({
               title: '修改成功',
               icon: 'succes',
               duration: 2000,
+              mask:true,
               success: function() {
                 setTimeout(function () {
                   wx.navigateBack({
@@ -96,8 +103,15 @@ Page({
           }
           
         },
-        fail: () => {wx.hideLoading()},
-        complete: () => { wx.hideLoading()}
+        fail: () => {
+          wx.showToast({
+            title: '修改失败',
+            icon: 'none',
+            duration: 2000,
+            mask:true,
+          })
+        },
+        // complete: () => { wx.hideLoading()}
       });
     }
   },

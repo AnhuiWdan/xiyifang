@@ -25,14 +25,10 @@ Page({
     })
     wx.scanCode({
       success: (res)=> {
-        console.log(res);
-        console.log(res.result);
       },
       fail: (rej)=> {
-        console.log(rej);
       },
       complete: function() {
-        wx.hideLoading();
       }
     })
   },
@@ -70,16 +66,29 @@ Page({
     
   },
   //退出按钮，进入登录页
-  logoutClick:function(){
+  logoutClick: function () {
+    const that = this;
     const app = getApp();
-    app.globalData.Authorization = '';
-    app.globalData.phoneNum = '';
-    wx.redirectTo({
-      url: '../login/login',
-    });
-    this.setData({
-      isLogin: false,
-      phoneNum: ''
+    wx.request({
+      url: `${URL}AccountInfo/LoginOut`,
+      header: {
+        'content-type': 'application/json',
+        Authorization: app.globalData.Authorization
+      },
+      method: 'post',
+      success: function (res) {
+        app.globalData.Authorization = '';
+        app.globalData.phoneNum = '';
+        that.setData({
+          isLogin: false,
+          phoneNum: ''
+        })
+        wx.redirectTo({
+          url: '../login/login'
+        });
+
+      }
     })
   }
+
 })

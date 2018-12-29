@@ -1,5 +1,6 @@
 // pages/register/register.js
 const app = getApp()
+const { URL } = require('../../utils/http');
 Page({
 
   /*** 页面的初始数据*/
@@ -9,13 +10,12 @@ Page({
     verifyCode:'',
     disabled:false,
     sendTime:'发送验证码',
-    currentTime:60
-    
+    currentTime:60,
   },
 
   /*** 生命周期函数--监听页面加载*/
   onLoad: function (options) {
-  
+ 
   },
   /*** 生命周期函数--监听页面卸载*/
   onUnload: function () {
@@ -68,7 +68,7 @@ Page({
         mask: true
       })
       wx.request({
-        url: 'https://xwxapi.itknow.cn/api/AccountManage/SendAuthCode',
+        url: `${URL}AccountManage/SendAuthCode`,
         data:{
           UserName: that.data.mobile
         },
@@ -98,20 +98,30 @@ Page({
                 })
               }
             }, 1000)
+          }else{
+            console.log(res)
+            wx.showToast({
+              title: '请稍后重新获取',
+              icon: 'none',
+              duration: 2000,
+              mask: true,
+            }); 
           }
         },
         fail:function(res){
+
         },
         complete: function() {wx.hideLoading()}
       })
     }
   },
   registerClick:function(){
-  
+    var that = this ;
     //注册
-    var mobile = this.data.mobile;
-    var psd = this.data.psd;
-    var verifyCode = this.data.verifyCode;
+    var mobile = that.data.mobile;
+    var psd = that.data.psd;
+    var verifyCode = that.data.verifyCode;
+  
     var mobileReg = /^1[34578]\d{9}$/;
     if (mobile == '') {
       wx.showModal({
@@ -132,7 +142,8 @@ Page({
         showCancel: false
       })
       return false
-    }else if (verifyCode == '') {
+    }
+    else if (verifyCode == '') {
       //判断验证码
       wx.showModal({
         title: '验证码不能为空！',
@@ -145,48 +156,61 @@ Page({
         showCancel: false
       })
       return false
-    }else {
+    }
+    else {
       wx.showLoading({
         title: '加载中...',
         mask: true
       })
-      wx.request({
-        url: 'https://xwxapi.itknow.cn/api/AccountManage/UserRegister',
-        data:{
-          UserName:mobile,
-          Password:psd,
-          AuthCode: verifyCode
-        },
-        header: {
-          'content-type': 'application/json'
-        },
-        method:'post',
-        success:function(res){
-          wx.hideLoading();
-          if(res.data.Code == 200){
-            wx.showToast({
-              title: '注册成功',
-              icon:'success',
-              duration: 20000,
-              mask:true,
-              success: function(){
-                setTimeout(function () {
-                  wx.redirectTo({
-                    url: '../login/login',
-                  })
-                }, 2000)
+      wx.login({
+        success(res) {
+          var RegisterId = res.code;
+          wx.request({
+            url: `${URL}AccountManage/UserRegister`,
+            data: {
+              UserName: mobile,
+              Password: psd,
+              AuthCode: verifyCode,
+              RegisterId: RegisterId
+            },
+            header: {
+              'content-type': 'application/json'
+            },
+            method: 'post',
+            success: function (res) {
+              wx.hideLoading();
+              if (res.data.Code == 200) {
+                wx.showToast({
+                  title: '注册成功',
+                  icon: 'success',
+                  duration: 2000,
+                  mask: true,
+                  success: function () {
+                    setTimeout(function () {
+                      wx.redirectTo({
+                        url: '../login/login',
+                      })
+                    }, 2000)
+                  }
+                });
+              } else {
+                wx.showToast({
+                  title: res.data.Message,
+                  icon: 'none',
+                  duration: 2000,
+                  mask: true,
+                  success: {
+
+                  }
+                });
+                return false
               }
-            });        
-          } else {
-            wx.showModal({
-              title: res.data.Message,
-              showCancel: false
-            })
-            return false
-          }
-        },
-        complete: function() {wx.hideLoading()}
+            },
+          })
+        }
       })
+     
+      
     }
   }
 

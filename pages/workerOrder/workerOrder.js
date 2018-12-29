@@ -4,6 +4,9 @@ const {
 } = require('../../utils/http');
 var QRCode = require('../../utils/weapp-qrcode.js');
 var qrcode;
+let res = wx.getSystemInfoSync();
+let scale = res.windowWidth / 750; //不同屏幕下QRcode的适配比例；设计稿是750宽
+let width = 390 * scale; // 390为设计稿的宽度
 Page({
 
   /*** 页面的初始数据*/
@@ -18,25 +21,40 @@ Page({
       rows: 10,
       Status: -1
     },
-    inputValue:'',
-    inputSearch:'',
-    statusValue:[
-      '所有',
-      '未支付',
-      '已支付',
-      '已寄',
-      '已取',
-      '正在派送',
-      '派送成功',
-      '已签收',
-      '工人拒收',
-      '退款',
-      '已退款',
-      '已派'
+    inputValue: '',
+    inputSearch: '',
+    statusValue: [{
+        key: -1,
+        status: '所有'
+      },
+      {
+        key: 10,
+        status: '已派'
+      },
+      {
+        key: 3,
+        status: '已取'
+      },
+      {
+        key: 5,
+        status: '派送成功'
+      },
+      {
+        key: 6,
+        status: '已签收'
+      },
+      {
+        key: 7,
+        status: '工人拒收'
+      }
     ],
-    index:0,
-    searchStatus:'状态筛选',
-    showModal: false
+    index: 0,
+    searchStatus: '状态筛选',
+    showModal: false,
+    showRemark: false,
+    remarkContent: '',
+    IndentCode: '',
+    textareaLength: 0
   },
   /*** 生命周期函数--监听页面加载*/
   onLoad: function (options) {
@@ -49,8 +67,8 @@ Page({
     }
     qrcode = new QRCode('canvas', {
       text: "0000000000000",
-      width: 200,
-      height: 200,
+      width: width,
+      height: width,
       colorDark: "#000000",
       colorLight: "#ffffff",
       correctLevel: QRCode.CorrectLevel.H,
@@ -125,60 +143,50 @@ Page({
     this.setData({
       showModal: true
     });
-    qrcode.makeCode(e.currentTarget.dataset.indentcode+ '_' + this.data.phoneNum); 
+    qrcode.makeCode(e.currentTarget.dataset.indentcode + '_' + this.data.phoneNum + '_' + 1);
 
-    // wx.showModal({
-    //   title: '提示',
-    //   content: '是否确认开箱？',
-    //   success(result) {
-    //     if(result.confirm) {
-    //       wx.scanCode({
-    //         success: (res) => {
-    //           wx.request({
-    //             url: `${URL}order/Flicking`,
-    //             data: {
-    //               IndentCode: event.currentTarget.dataset.indentcode,
-    //               WechatPage: 'order',
-    //               WechatFormId: app.globalData.formId,
-    //               ...JSON.parse(res.result)
-    //             },
-    //             header: {
-    //               'content-type': 'application/json',
-    //               Authorization: app.globalData.Authorization
-    //             },
-    //             method: 'POST',
-    //             dataType: 'json',
-    //             responseType: 'text',
-    //             success: (res) => {
-    //               if (res.data.Code === 200) {
-    //                 that.onLoad();
-    //                 wx.showModal({
-    //                   title: '开箱成功！',
-    //                   showCancel: false
-    //                 });
-    //               } else {
-    //                 wx.showModal({
-    //                   title: res.data.Message,
-    //                   showCancel: false
-    //                 })
-    //                 return false
-    //               }
-    //             }
-    //           })
-    //         },
-    //         fail: (rej) => {},
-    //         complete: ()=>{}
-    //       })
-    //     } else if(result.cancel) {
-    //       return;
-    //     }
-    //   }
-    // })
-    
   },
+  // 派件按钮 --- 先判断是否有柜子，如果有走到下一步，没人提示
+  findBox: function (e) {
+    const that = this;
+    wx.showLoading({
+      title: '加载中...',
+      mask: true
+    })
+    wx.request({
+      url: `${URL}order/Dispatch`,
+      data: {indentCode: e.currentTarget.dataset.indentcode},
+      header: {
+        'content-type': 'application/json',
+        Authorization: this.data.Authorization
+      },
+      method: 'POST',
+      dataType: 'json',
+      responseType: 'text',
+      success: function (res) {
+        if(res.data.Code === 200) {
+          wx.showModal({
+            title: '柜子已锁定，请尽快前往！',
+            showCancel: false
+          });
+          that.onLoad();
+        } else {
+          wx.showModal({
+            title: res.data.Message,
+            showCancel: false
+          });
+        }
+      },
+      complete: function () {
+        wx.hideLoading()
+      }
+    })
+  },
+
+
   // 关闭弹框
-  closeModal: function(e){
-    if(e.target.id === 'canvasBox') {
+  closeModal: function (e) {
+    if (e.target.id === 'canvasBox') {
       return;
     }
     this.setData({
@@ -292,92 +300,204 @@ Page({
 
   },
 
-    // 订单号搜索
-    inputSearch: function (e) {
-      //密码
-      this.setData({
-        inputSearch: e.detail.value
-      })
-    },
-    clickSearch:function(){
-      console.log(this.data.inputSearch)
-      const app = getApp();
-      const that = this;
-      wx.request({
-        url: `${URL}order/GetOrderList`,
-        data: {
-          page:1,
-          rows:10,
-          IndentCode:this.data.inputSearch,
-          Status:-1
-        },
-        header: {
-          'content-type': 'application/json',
-          Authorization: app.globalData.Authorization
-        },
-        method: 'POST',
-        dataType: 'json',
-        responseType: 'text',
-        success: (res) => {
-          wx.hideLoading();
-          if (res.data.Code == 200) {
-            console.log(res.data.Data);
-            that.setData({
-              searchStatus:'状态筛选',
-              rows: res.data.Data.rows,
-            })
-          } else {
-            wx.showModal({
-              title: res.data.Message,
-              showCancel: false
-            })
-            return false;
-          }
-        },
-        fail: () => { },
-        complete: () => { wx.hideLoading() }
-      });
-    },
+  // 订单号搜索
+  inputSearch: function (e) {
+    //密码
+    this.setData({
+      inputSearch: e.detail.value
+    })
+    const app = getApp();
+    const that = this;
+    wx.request({
+      url: `${URL}order/GetOrderList`,
+      data: {
+        page: 1,
+        rows: 10,
+        IndentCode: this.data.inputSearch,
+        Status: -1
+      },
+      header: {
+        'content-type': 'application/json',
+        Authorization: app.globalData.Authorization
+      },
+      method: 'POST',
+      dataType: 'json',
+      responseType: 'text',
+      success: (res) => {
+        wx.hideLoading();
+        if (res.data.Code == 200) {
+          that.setData({
+            searchStatus: '状态筛选',
+            rows: res.data.Data.rows,
+          })
+        } else {
+          wx.showModal({
+            title: res.data.Message,
+            showCancel: false
+          })
+          return false;
+        }
+      },
+      fail: () => {},
+      complete: () => {
+        wx.hideLoading()
+      }
+    });
+  },
+  clickSearch: function () {
+    const app = getApp();
+    const that = this;
+    wx.request({
+      url: `${URL}order/GetOrderList`,
+      data: {
+        page: 1,
+        rows: 10,
+        IndentCode: this.data.inputSearch,
+        Status: -1
+      },
+      header: {
+        'content-type': 'application/json',
+        Authorization: app.globalData.Authorization
+      },
+      method: 'POST',
+      dataType: 'json',
+      responseType: 'text',
+      success: (res) => {
+        wx.hideLoading();
+        if (res.data.Code == 200) {
+          that.setData({
+            searchStatus: '状态筛选',
+            rows: res.data.Data.rows,
+          })
+        } else {
+          wx.showModal({
+            title: res.data.Message,
+            showCancel: false
+          })
+          return false;
+        }
+      },
+      fail: () => {},
+      complete: () => {
+        wx.hideLoading()
+      }
+    });
+  },
+  openRejection: function (e) { //拒收
+    const id = e.currentTarget.dataset.indentid;
+    wx.navigateTo({
+      url: '../workerRejection/workerRejection?id=' + id
+    })
+  },
   //状态筛选
-    bindPickerChange: function (e) {
-      const app = getApp();
-      const that = this;
-      const sssPage = 'formData.page'
-      const sssStatus = 'formData.Status';
-      that.setData({
-        inputValue:'',
-        index: e.detail.value,
-        [sssPage]:1,
-        [sssStatus]: e.detail.value-1,
-        searchStatus: that.data.statusValue[e.detail.value]
-      })
-      // console.log(that.data.formData)
-      wx.request({
-        url: `${URL}order/GetOrderList`,
-        data: this.data.formData,
-        header: {
-          'content-type': 'application/json',
-          Authorization: app.globalData.Authorization
-        },
-        method: 'POST',
-        dataType: 'json',
-        responseType: 'text',
-        success: (res) => {
+  bindPickerChange: function (e) {
+    const app = getApp();
+    const that = this;
+    const sssPage = 'formData.page'
+    const sssStatus = 'formData.Status';
+    // console.log(that.data.statusValue[e.detail.value].key)
+    that.setData({
+      inputValue: '',
+      index: e.detail.value,
+      [sssPage]: 1,
+      [sssStatus]: that.data.statusValue[e.detail.value].key,
+      searchStatus: that.data.statusValue[e.detail.value].status
+    })
+    wx.request({
+      url: `${URL}order/GetOrderList`,
+      data: this.data.formData,
+      header: {
+        'content-type': 'application/json',
+        Authorization: app.globalData.Authorization
+      },
+      method: 'POST',
+      dataType: 'json',
+      responseType: 'text',
+      success: (res) => {
+        wx.hideLoading();
+        if (res.data.Code == 200) {
+          that.setData({
+            rows: res.data.Data.rows,
+          })
+        } else {
+          wx.showModal({
+            title: res.data.Message,
+            showCancel: false
+          })
+          return false;
+        }
+      },
+      fail: () => {},
+      complete: () => {
+        wx.hideLoading()
+      }
+    });
+  },
+  calling: function (e) {
+    const studentPhone = e.currentTarget.dataset.phone;
+    // console.log(studentPhone);
+    wx.makePhoneCall({
+      phoneNumber: studentPhone,
+      success: function (resp) {
+        console.log(resp)
+      },
+      fail: function (res) {
+        console.log(res)
+      }
+    })
+  },
+  remark: function (e) {
+    // console.log(e.currentTarget.dataset.indentcode)
+    this.setData({
+      IndentCode: e.currentTarget.dataset.indentcode,
+      showRemark: true
+    })
+  },
+  closeRemark: function (e) {
+    this.setData({
+      showRemark: false
+    });
+  },
+  fillRemark: function (e) {
+    this.setData({
+      remarkContent: e.detail.value,
+      textareaLength: e.detail.value.length
+    })
+    // console.log(e.detail.value.length);
+  },
+  saveRemark: function () {
+    const app = getApp();
+    const that = this;
+    // console.log(that.data.remarkContent);
+    wx.showLoading({
+      title: '加载中',
+      mask: true
+    })
+    wx.request({
+      url: `${URL}order/WorkerRejectionRemark`,
+      data: {
+        IndentCode: that.data.IndentCode,
+        ClothesRemark: that.data.remarkContent
+      },
+      header: {
+        'content-type': 'application/json',
+        Authorization: app.globalData.Authorization
+      },
+      method: 'POST',
+      dataType: 'json',
+      responseType: 'text',
+      success: function (res) {
+        console.log(res)
+        if (res.data.Code == 200) {
           wx.hideLoading();
-          if (res.data.Code == 200) {
-            that.setData({
-              rows: res.data.Data.rows,
-            })
-          } else {
-            wx.showModal({
-              title: res.data.Message,
-              showCancel: false
-            })
-            return false;
-          }
-        },
-        fail: () => { },
-        complete: () => { wx.hideLoading() }
-      });
-    }
+          that.setData({
+            showRemark: false
+          })
+        }
+      },
+      fail: function (res) {
+        console.log(res)
+      }
+    })
+  }
 })

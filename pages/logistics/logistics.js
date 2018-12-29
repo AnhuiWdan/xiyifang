@@ -45,6 +45,7 @@ Page({
                 title: res.data.Message,
                 icon: 'none',
                 duration: 2000,
+                mask:true,
               })
             }
           }
